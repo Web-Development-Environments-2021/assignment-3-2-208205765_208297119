@@ -48,7 +48,7 @@ app.options("*", cors(corsConfig));
 const port = process.env.PORT || "3001";
 const auth = require("./routes/auth");
 const users = require("./routes/users");
-const league = require("./routes/league");
+const mainPage = require("./routes/mainPage");
 const teams = require("./routes/teams");
 const search=require("./routes/search");
 const personalPages=require("./routes/personalPages");
@@ -77,7 +77,7 @@ app.get("/alive", (req, res) => res.send("I'm alive"));
 
 // Routings
 app.use("/users", users);
-app.use("/league", league);
+app.use("/mainPage", mainPage);
 app.use("/teams", teams);
 app.use("/search",search);
 app.use("/personalPages",personalPages);

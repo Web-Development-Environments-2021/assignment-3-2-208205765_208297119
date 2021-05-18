@@ -7,6 +7,11 @@ async function getCoachById(id){
             api_token: process.env.api_token
         },
     });
+    return coach;
+}
+
+async function getCoachPersonalPage(coach_id){
+    const coach=await getCoachById(coach_id);
     const team=await team_utils.getTeamById(coach.data.data.team_id);
     const team_name=team.name;
     return {
@@ -20,4 +25,16 @@ async function getCoachById(id){
     };
 }
 
-exports.getCoachById=getCoachById;
+async function getCoachPreviewData(coach_id){
+    const coach= await getCoachById(coach_id);
+    const team=await team_utils.getTeamById(coach.data.data.team_id);
+    const team_name=team.name;
+    return {
+    full_name:coach.data.data.fullname,
+    team_name:team_name,
+    pic:coach.data.data.image_path,
+    };
+}
+
+exports.getCoachPersonalPage=getCoachPersonalPage;
+exports.getCoachPreviewData=getCoachPreviewData;

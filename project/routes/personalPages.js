@@ -11,12 +11,12 @@ router.get("/playerPage/:player_id", async (req,res) =>{
 
 router.get("/coachPage/:coach_id", async (req,res)=>{
     const coach_id=req.params.coach_id;
-    res.status(200).send(await coach_utils.getCoachById(coach_id));
+    res.status(200).send(await coach_utils.getCoachPersonalPage(coach_id));
 });
 
 router.get("/teamPage/:team_id",async (req,res)=>{
     const team_id=req.params.team_id;
-    
+    res.status(200).send(await team_utils.getTeamPageData(team_id));
 });
 
 module.exports=router;

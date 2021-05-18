@@ -1,9 +1,9 @@
 const axios = require("axios");
-const LEAGUE_ID = 271;
+const game_utils=require("./gameUtils");
 
 async function getLeagueDetails() {
   const league = await axios.get(
-    `https://soccer.sportmonks.com/api/v2.0/leagues/${LEAGUE_ID}`,
+    `${process.env.api_domain}/leagues/${process.env.league_id}`,
     {
       params: {
         include: "season",
@@ -12,18 +12,19 @@ async function getLeagueDetails() {
     }
   );
   const stage = await axios.get(
-    `https://soccer.sportmonks.com/api/v2.0/stages/${league.data.data.current_stage_id}`,
+    `${process.env.api_domain}/stages/${league.data.data.current_stage_id}`,
     {
       params: {
         api_token: process.env.api_token,
       },
     }
   );
+    let nearestGame=await game_utils.getNearestGame();
   return {
     league_name: league.data.data.name,
     current_season_name: league.data.data.season.data.name,
     current_stage_name: stage.data.data.name,
-    // next game details should come from DB
+    next_planned_game: nearestGame
   };
 }
 exports.getLeagueDetails = getLeagueDetails;

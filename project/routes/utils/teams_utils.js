@@ -1,4 +1,8 @@
 const axios=require("axios");
+const players_utils=require("./players_utils");
+const coach_utils=require("./coach_utils");
+const DButils=require("./DButils");
+const games_utils=require("./gameUtils");
 
 async function getTeamsByName(name){
     const teams= await axios.get(`${process.env.api_domain}/teams/search/:TEAM_NAME`,{
@@ -26,9 +30,23 @@ async function getTeamById(team_id){
     return team.data.data;
 }
 
-async function createTeamPage(team_id){
-    
+async function getTeamPageData(team_id){
+    const team = await axios.get(`${process.env.api_domain}/teams/${team_id}`,{
+        params:{
+            api_token: process.env.api_token,
+            include: "coach"
+        },
+    });
+    let players_info=await players_utils.getPlayersByTeam(team_id);
+    let coach_data=await coach_utils.getCoachPreviewData(team.data.data.coach_id);
+    let team_games= await games_utils.getGamesOfTeam(team_id);
+    return {
+        players: players_info,
+        coach: coach_data,
+        games: team_games
+    };
 }
 
 exports.getTeamsByName= getTeamsByName;
 exports.getTeamById=getTeamById;
+exports.getTeamPageData=getTeamPageData;
