@@ -41,12 +41,19 @@ async function getTeamPageData(team_id){
     let coach_data=await coach_utils.getCoachPreviewData(team.data.data.coach_id);
     let team_games= await games_utils.getGamesOfTeam(team_id);
     return {
+        team_name: team.data.data.name,
+        team_logo: team.data.data.logo_path,
         players: players_info,
         coach: coach_data,
         games: team_games
     };
 }
 
+async function getAllTeamsBySeasonID(){
+    return await axios.get(`${process.env.api_domain}/teams/season/${process.env.season_id}`);
+}
+
 exports.getTeamsByName= getTeamsByName;
 exports.getTeamById=getTeamById;
 exports.getTeamPageData=getTeamPageData;
+exports.getAllTeamsBySeasonID=getAllTeamsBySeasonID;

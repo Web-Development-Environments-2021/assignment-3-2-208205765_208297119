@@ -15,9 +15,7 @@ CREATE TABLE Games(
     hostTeam VARCHAR(255) NOT NULL,
     guestTeam VARCHAR(255) NOT NULL,
     stadium VARCHAR(255) NOT NULL,
-    stage VARCHAR(255) NOT NULL,
     result VARCHAR(255),
-    
 );
 
 CREATE TABLE EventsInGame(
@@ -29,12 +27,20 @@ CREATE TABLE EventsInGame(
     eventDescription VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE User_Preferences(
-    id INTEGER NOT NULL PRIMARY KEY IDENTITY,
+CREATE TABLE User_Favorite_players(
+    player_id INTEGER NOT NULL PRIMARY KEY ,
     userName VARCHAR(255) NOT NULL,
-    favoriteObjectID VARCHAR(255) NOT NULL,
-    objectType VARCHAR(255) NOT NULL
-);
+  );
+
+  CREATE TABLE User_favorite_teams(
+      team_id INTEGER NOT NULL PRIMARY KEY,
+      username VARCHAR(255) NOT NULL
+  );
+
+  CREATE TABLE User_favorite_games(
+      game_id INTEGER NOT NULL PRIMARY KEY,
+      username VARCHAR(255) NOT NULL
+  );
 
 
 

@@ -56,5 +56,37 @@ async function getNearestGame(){
     return createGameObject(nearestGame);
 }
 
+async function getGameDetailsByID(game_id){
+    const game=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium FROM dbo.Games WHERE id=${game_id}`);
+    return createGameObject(game);
+}
+
+async function deletePlayedGames(user_name){
+    // delete favorite games that were already played
+    await DButils.execQuery(`DELETE FROM User_favorite_teams WHERE GETDATE()>gameTime AND username='${user_name}'`);
+}
+
+async function getThreeNextGames(user_name){
+    const games=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium FROM dbo.Games INNER JOIN dbo.User_favorite_games ON dbo.Games.id=dbo.User_favorite_games.game_id WHERE (gameTime>GETDATE() AND username='${user_name}')`);
+    if(games.length==0){
+        return [];
+    }
+    let games_arr=[];
+    let bound=0;
+    if(games.length>3){
+        bound =3;
+    }
+    else{
+        bound=games.length;
+    }
+    for(let i=0;i<bound;i++){
+        games_arr.push(createGameObject(games[i]));
+    }
+    return games_arr;
+}
+
 exports.getGamesOfTeam=getGamesOfTeam;
 exports.getNearestGame=getNearestGame;
+exports.deletePlayedGames=deletePlayedGames;
+exports.getGameDetailsByID=getGameDetailsByID;
+exports.getThreeNextGames=getThreeNextGames;

@@ -16,17 +16,13 @@ async function getPlayerIdsByTeam(team_id) {
 }
 
 async function getPlayersByName(name){
-  const players= await axios.get(`${process.env.api_domain}/players/search/:PLAYER_NAME`,{
+  const players= await axios.get(`${process.env.api_domain}/players/search/${name}`,{
     params:{
         api_token:process.env.api_token,
-        PLAYER_NAME: name,
         include: "team"
     },
 });
-  if(players.data.Length==0){ // if no players were found
-    return [];
-  }
-  return extractRelevantPlayerData(players);
+  return players;
 }
 
 async function getPlayerById(id){
@@ -86,7 +82,18 @@ async function getPlayersByTeam(team_id) {
   return players_info;
 }
 
+function getPlayerPreviewData(player){
+  return{
+    full_name:player.data.data.fullname,
+    team_name:player.data.data.team.data.name,
+    pic:player.data.data.image_path,
+    position_number: player.data.data.position_id
+
+  };
+}
+
 exports.getPlayersByTeam = getPlayersByTeam;
 exports.getPlayersInfo = getPlayersInfo;
 exports.getPlayersByName= getPlayersByName;
 exports.getPlayerById=getPlayerById;
+exports.getPlayerPreviewData=getPlayerPreviewData;
