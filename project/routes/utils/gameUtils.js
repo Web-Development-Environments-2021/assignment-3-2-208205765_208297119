@@ -2,10 +2,14 @@ const DButils=require("./DButils");
 
 
 async function getGamesOfTeam(team_id){
-    let past_games_arr_to_return=[];
-    let future_games_Arr_to_return=[];
     let future_games = await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium FROM dbo.Games WHERE (hostTeam=${team_id} OR guestTeam=${team_id}) AND gameTime>=GETDATE()`);
     let past_games= await DButils.execQuery(`SELECT id,gameTime,hostTeam,guestTeam,stadium,result FROM dbo.Games WHERE (hostTeam=${team_id} OR guestTeam=${team_id}) AND gameTime<GETDATE()`);
+    return await getFutureAndPastGamesObject(past_games,future_games);
+}
+
+async function getFutureAndPastGamesObject(past_games,future_games){
+    let past_games_arr_to_return=[];
+    let future_games_Arr_to_return=[];
     for(let i=0;i<past_games.length;i++){
         let events_arr=[];
         let gameEvents=await DButils.execQuery(`SELECT eventDate,eventHour,eventMinute,eventDescription FROM dbo.EventsInGame WHERE gameID=${past_games[i].id} `);
@@ -25,7 +29,10 @@ async function getGamesOfTeam(team_id){
     for(let i=0;i<future_games.length;i++){
         future_games_Arr_to_return.push(createGameObject(future_games[i],team_games));
     }
-    return [past_games_arr_to_return,future_games_Arr_to_return];
+    return {
+        future_games_arr: future_games_Arr_to_return,
+        past_games_arr: past_games_arr_to_return
+    };
 }
 
 function createGameObject(game){
@@ -85,8 +92,15 @@ async function getThreeNextGames(user_name){
     return games_arr;
 }
 
+async function getGamesOfCurrentStage(){
+    const future_games=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium FROM dbo.Games WHERE gameTime>=GETDATE()`);
+    const past_games= await DButils.execQuery(`id,gameTime,hostTeam,guestTeam,stadium,result FROM dbo.Games WHERE gameTime<GETDATE()`);
+    return await getFutureAndPastGamesObject(past_games,future_games);
+}
+
 exports.getGamesOfTeam=getGamesOfTeam;
 exports.getNearestGame=getNearestGame;
 exports.deletePlayedGames=deletePlayedGames;
 exports.getGameDetailsByID=getGameDetailsByID;
 exports.getThreeNextGames=getThreeNextGames;
+exports.getGamesOfCurrentStage=getGamesOfCurrentStage;

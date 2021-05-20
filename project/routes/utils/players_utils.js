@@ -84,10 +84,11 @@ async function getPlayersByTeam(team_id) {
 
 function getPlayerPreviewData(player){
   return{
-    full_name:player.data.data.fullname,
-    team_name:player.data.data.team.data.name,
-    pic:player.data.data.image_path,
-    position_number: player.data.data.position_id
+    player_id: player.player_id,
+    full_name:player.fullname,
+    team_name:player.team.data.name,
+    pic:player.image_path,
+    position_number: player.position_id
 
   };
 }

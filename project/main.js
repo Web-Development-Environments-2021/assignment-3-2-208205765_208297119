@@ -52,6 +52,7 @@ const mainPage = require("./routes/mainPage");
 const teams = require("./routes/teams");
 const search=require("./routes/search");
 const personalPages=require("./routes/personalPages");
+const currentStageGames=require("./routes/currentStageGames");
 
 //#endregion
 
@@ -81,6 +82,7 @@ app.use("/mainPage", mainPage);
 app.use("/teams", teams);
 app.use("/search",search);
 app.use("/personalPages",personalPages);
+app.use("/currentStageGames",currentStageGames);
 app.use(auth);
 
 app.use(function (err, req, res, next) {

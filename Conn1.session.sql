@@ -42,5 +42,11 @@ CREATE TABLE User_Favorite_players(
       username VARCHAR(255) NOT NULL
   );
 
+  CREATE TABLE User_searches(
+      id INTEGER NOT NULL PRIMARY KEY IDENTITY,
+      username VARCHAR(255) NOT NULL,
+      last_search VARCHAR(255) NOT NULL
+  );
+
 
 

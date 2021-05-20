@@ -4,23 +4,6 @@ const coach_utils=require("./coach_utils");
 const DButils=require("./DButils");
 const games_utils=require("./gameUtils");
 
-async function getTeamsByName(name){
-    const teams= await axios.get(`${process.env.api_domain}/teams/search/:TEAM_NAME`,{
-        params:{
-            api_token: process.env.api_token,
-            TEAM_NAME: name
-        }
-    });
-    let teams_data=[];
-    if(teams.data.length!=0){
-        for(let i=0;i<teams.data.Length;i++){
-                data=[teams.data[i].name,teams.data[i].logo];
-                teams_data.push(data);
-        }
-    }
-    return teams_data;
-}
-
 async function getTeamById(team_id){
     const team= await axios.get(`${process.env.api_domain}/teams/${team_id}`,{
         params:{
@@ -41,6 +24,7 @@ async function getTeamPageData(team_id){
     let coach_data=await coach_utils.getCoachPreviewData(team.data.data.coach_id);
     let team_games= await games_utils.getGamesOfTeam(team_id);
     return {
+        team_id: team_id,
         team_name: team.data.data.name,
         team_logo: team.data.data.logo_path,
         players: players_info,
@@ -50,7 +34,39 @@ async function getTeamPageData(team_id){
 }
 
 async function getAllTeamsBySeasonID(){
-    return await axios.get(`${process.env.api_domain}/teams/season/${process.env.season_id}`);
+    return await axios.get(`${process.env.api_domain}/teams/season/${process.env.season_id}`,{
+        params:{
+            api_token: process.env.api_token,
+            include: "coach"
+        },
+    });
+}
+
+async function getTeamsByName(name){
+    const teams_in_season= await getAllTeamsBySeasonID();
+    if(teams_in_season.data.data.length==0){
+        return [];
+    }
+    const teams_by_name= await axios.get(`${process.env.api_domain}/teams/search/${name}`,{
+        params:{
+            api_token: process.env.api_token
+        },
+    });
+    if(teams_by_name.data.data.length==0){
+        return [];
+    }
+    let relevant_teams=[];
+    for(let i=0;i<teams_by_name.data.data.length;i++){
+        const team_id=teams_by_name.data.data[i].id;
+        if(teams_in_season.data.data.find(x=> x.id===team_id)){
+            relevant_teams.push({
+                team_id: teams_by_name.data.data[i].id,
+                team_name: teams_by_name.data.data[i].name,
+                team_logo: teams_by_name.data.data[i].logo_path
+            });
+        }
+    }
+    return relevant_teams;
 }
 
 exports.getTeamsByName= getTeamsByName;

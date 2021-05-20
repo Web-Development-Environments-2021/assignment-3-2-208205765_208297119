@@ -11,7 +11,7 @@ const games_utils=require("./utils/gameUtils");
  */
 router.use(async function (req, res, next) {
   if (req.session && req.session.user_name) {
-    DButils.execQuery("SELECT user_id FROM users_tirgul")
+    DButils.execQuery("SELECT username FROM dbo.Users")
       .then((users) => {
         if (users.find((x) => x.user_name === req.session.user_name)) {
           req.user_name = req.session.user_name;
@@ -23,6 +23,7 @@ router.use(async function (req, res, next) {
     res.sendStatus(401);
   }
 });
+
 
 /**
  * This path gets body with playerId and save this player in the favorites list of the logged-in user
