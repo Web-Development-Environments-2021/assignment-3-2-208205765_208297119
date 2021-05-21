@@ -2,8 +2,8 @@ const DButils=require("./DButils");
 
 
 async function getGamesOfTeam(team_id){
-    let future_games = await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium FROM dbo.Games WHERE (hostTeam=${team_id} OR guestTeam=${team_id}) AND gameTime>=GETDATE()`);
-    let past_games= await DButils.execQuery(`SELECT id,gameTime,hostTeam,guestTeam,stadium,result FROM dbo.Games WHERE (hostTeam=${team_id} OR guestTeam=${team_id}) AND gameTime<GETDATE()`);
+    let future_games = await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE (hostTeam=${team_id} OR guestTeam=${team_id}) AND gameTime>=GETDATE()`);
+    let past_games= await DButils.execQuery(`SELECT id,gameTime,hostTeam,guestTeam,stadium,result,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE (hostTeam=${team_id} OR guestTeam=${team_id}) AND gameTime<GETDATE()`);
     return await getFutureAndPastGamesObject(past_games,future_games);
 }
 
@@ -45,11 +45,12 @@ function createGameObject(game){
         date: dateOfTheGame,
         hour: time,
         stadium: game.stadium,
+        referee_name: game.fullName
      };
 }
 
 async function getNearestGame(){
-    let games= await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium FROM dbo.Games WHERE gameTime>=GETDATE()`);
+    let games= await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime>=GETDATE()`);
     let nearestGame=null;
     let diff = 100000000;
     let currentDate=new Date();
@@ -64,7 +65,7 @@ async function getNearestGame(){
 }
 
 async function getGameDetailsByID(game_id){
-    const game=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium FROM dbo.Games WHERE id=${game_id}`);
+    const game=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE id=${game_id}`);
     return createGameObject(game);
 }
 
@@ -74,7 +75,7 @@ async function deletePlayedGames(user_name){
 }
 
 async function getThreeNextGames(user_name){
-    const games=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium FROM dbo.Games INNER JOIN dbo.User_favorite_games ON dbo.Games.id=dbo.User_favorite_games.game_id WHERE (gameTime>GETDATE() AND username='${user_name}')`);
+    const games=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.User_favorite_games ON dbo.Games.id=dbo.User_favorite_games.game_id INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE (gameTime>GETDATE() AND username='${user_name}')`);
     if(games.length==0){
         return [];
     }
@@ -93,9 +94,13 @@ async function getThreeNextGames(user_name){
 }
 
 async function getGamesOfCurrentStage(){
-    const future_games=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium FROM dbo.Games WHERE gameTime>=GETDATE()`);
-    const past_games= await DButils.execQuery(`id,gameTime,hostTeam,guestTeam,stadium,result FROM dbo.Games WHERE gameTime<GETDATE()`);
+    const future_games=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium, fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime>=GETDATE()`);
+    const past_games= await DButils.execQuery(`id,gameTime,hostTeam,guestTeam,stadium,result,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime<GETDATE()`);
     return await getFutureAndPastGamesObject(past_games,future_games);
+}
+
+async function checkIfGameWasPlayed(game_id){
+    return (await DButils.execQuery(`SELECT * FROM dbo.Games WHERE id=${game_id} AND gameTime>GETDATE()`)).length>0;
 }
 
 exports.getGamesOfTeam=getGamesOfTeam;
@@ -104,3 +109,4 @@ exports.deletePlayedGames=deletePlayedGames;
 exports.getGameDetailsByID=getGameDetailsByID;
 exports.getThreeNextGames=getThreeNextGames;
 exports.getGamesOfCurrentStage=getGamesOfCurrentStage;
+exports.checkIfGameWasPlayed=checkIfGameWasPlayed;

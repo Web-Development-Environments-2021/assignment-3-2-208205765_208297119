@@ -16,6 +16,7 @@ CREATE TABLE Games(
     guestTeam VARCHAR(255) NOT NULL,
     stadium VARCHAR(255) NOT NULL,
     result VARCHAR(255),
+    referee_id INTEGER NOT NULL
 );
 
 CREATE TABLE EventsInGame(
@@ -23,7 +24,8 @@ CREATE TABLE EventsInGame(
     gameID INTEGER NOT NULL,
     eventDate DATE NOT NULL,
     eventHour TIME NOT NULL,
-    eventMinuteInGame VARCHAR(255) NOT NULL,
+    eventMinuteInGame INTEGER NOT NULL,
+    event VARCHAR(255) NOT NULL,
     eventDescription VARCHAR(255) NOT NULL
 );
 
@@ -42,11 +44,13 @@ CREATE TABLE User_Favorite_players(
       username VARCHAR(255) NOT NULL
   );
 
-  CREATE TABLE User_searches(
-      id INTEGER NOT NULL PRIMARY KEY IDENTITY,
-      username VARCHAR(255) NOT NULL,
-      last_search VARCHAR(255) NOT NULL
-  );
+  CREATE TABLE Referees(
+      referee_id INTEGER NOT NULL PRIMARY KEY IDENTITY,
+      fullName VARCHAR(255) NOT NULL,
+      country VARCHAR(255) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+  )
+
 
 
 

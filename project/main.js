@@ -53,6 +53,7 @@ const teams = require("./routes/teams");
 const search=require("./routes/search");
 const personalPages=require("./routes/personalPages");
 const currentStageGames=require("./routes/currentStageGames");
+const leagueManagment=require("./routes/leagueManagment");
 
 //#endregion
 
@@ -83,6 +84,7 @@ app.use("/teams", teams);
 app.use("/search",search);
 app.use("/personalPages",personalPages);
 app.use("/currentStageGames",currentStageGames);
+app.use("/leagueManagment",leagueManagment);
 app.use(auth);
 
 app.use(function (err, req, res, next) {

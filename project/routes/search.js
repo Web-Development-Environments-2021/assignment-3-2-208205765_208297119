@@ -3,6 +3,14 @@ let router=app.Router();
 const players_utils=require("./utils/players_utils");
 const teams_utils=require("./utils/teams_utils");
 
+router.use("lastResults", async(req,res,next)=>{
+    if(req.session && req.session.username){
+        next();
+    }
+    else{
+        res.status(401).send("user is not logged in to get last search results");
+    }
+});
 
 router.get("/:name",async (req,res) =>{
     const name=req.params.name;
@@ -15,10 +23,24 @@ router.get("/:name",async (req,res) =>{
         teamsArray: teams
     };
     if(players.length==0 && coaches.length==0 && teams.length==0){
+        if(req.session.user_name){
+            req.session.last_search_results=null;
+        }
         res.status(204).send("No players/teams/coaches were found");
         return;
     }
+    if(req.session.user_name){
+        req.session.last_search_results=searchObj;
+    }
     res.status(200).send(searchObj);
+});
+
+router.get("/lastResults",async(req,res)=>{
+    if(!req.session.last_search_results){
+        res.status(204).send("There are no search results");
+        return;
+    }
+    res.status(200).send(req.session.last_search_results);
 });
 
 async function getAllPlayersByName(name){
@@ -56,4 +78,5 @@ async function getAllCoachesByName(name){
     }
     return coaches;
 }
+
 module.exports=router;
