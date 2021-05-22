@@ -46,7 +46,7 @@ router.post("addResultToGame/:game_id/:result", async(req,res)=>{
 router.post("addEventSchedualeToGame/:game_id", async(req,res)=>{
     const game_id=req.params.game_id;
     const event=req.body.eventsArr;
-    for(event in eventsArr){
+    for(event of eventsArr){
         await assosiation_man_utils.addEventToGame(game_id,event);
     }
     res.status(201);
@@ -66,7 +66,7 @@ router.get("getAllFreeRefereesToGame/:time_of_game", async(req,res)=>{
         return;
     }
     let free_referees_objects_arr=[];
-    for(referee in free_referees){
+    for(referee of free_referees){
         free_referees_objects_arr.push({
             referee_id: referee[0],
             referee_name: referee[1]
