@@ -71,7 +71,7 @@ function extractRelevantPlayerData(players_info) {
       name: fullname,
       team_name: name,
       image: image_path,
-      position: position_id,
+      position: position_id
     };
   });
 }

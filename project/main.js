@@ -54,6 +54,7 @@ const search=require("./routes/search");
 const personalPages=require("./routes/personalPages");
 const currentStageGames=require("./routes/currentStageGames");
 const leagueManagment=require("./routes/leagueManagment");
+const Cookies = require("cookies");
 
 //#endregion
 
@@ -93,11 +94,11 @@ app.use(function (err, req, res, next) {
 });
 
 const server = app.listen(port, () => {
-  console.log(`Server listen on port ${port}`);
+  console.log(`Server listen on port ${server.address().port}`);
 });
 
-// process.on("SIGINT", function () {
-//   if (server) {
-//     server.close(() => console.log("server closed"));
-//   }
-// });
+process.on("SIGINT", function () {
+  if (server) {
+    server.close(() => console.log("server closed"));
+  }
+});

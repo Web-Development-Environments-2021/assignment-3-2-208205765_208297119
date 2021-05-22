@@ -51,6 +51,9 @@ function createGameObject(game){
 
 async function getNearestGame(){
     let games= await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime>=GETDATE()`);
+    if(games.length==0){
+        return null;
+    }
     let nearestGame=null;
     let diff = 100000000;
     let currentDate=new Date();
@@ -95,12 +98,12 @@ async function getThreeNextGames(user_name){
 
 async function getGamesOfCurrentStage(){
     const future_games=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium, fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime>=GETDATE()`);
-    const past_games= await DButils.execQuery(`id,gameTime,hostTeam,guestTeam,stadium,result,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime<GETDATE()`);
+    const past_games= await DButils.execQuery(`SELECT id,gameTime,hostTeam,guestTeam,stadium,result,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime<GETDATE()`);
     return await getFutureAndPastGamesObject(past_games,future_games);
 }
 
 async function checkIfGameWasPlayed(game_id){
-    return (await DButils.execQuery(`SELECT * FROM dbo.Games WHERE id=${game_id} AND gameTime>GETDATE()`)).length>0;
+    return (await DButils.execQuery(`SELECT * FROM dbo.Games WHERE id=${game_id} AND gameTime<GETDATE()`)).length>0;
 }
 
 exports.getGamesOfTeam=getGamesOfTeam;

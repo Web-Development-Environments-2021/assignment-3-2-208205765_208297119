@@ -24,10 +24,11 @@ router.post("/Register", async (req, res, next) => {
 
     // add the new username
     await DButils.execQuery(
-      `INSERT INTO dbo.Users (username, password, firstName, lastName, country, email, profilePic) VALUES ('${req.body.username}', '${hash_password}', '${req.body.first_name}', '${req.body.last_name}', '${req.body.country}', '${req.body.email}', '${req.body.profice_pic}')`
+      `INSERT INTO dbo.Users (username, password, firstName, lastName, country, email, profile_pic) VALUES ('${req.body.username}', '${hash_password}', '${req.body.first_name}', '${req.body.last_name}', '${req.body.country}', '${req.body.email}', '${req.body.profile_pic}')`
     );
+    //res.redirect("/Login");//redirect the user to login page
     res.status(201).send("user created");
-    res.redirect("/Login");//redirect the user to login page
+    
   } catch (error) {
     next(error);
   }
@@ -37,7 +38,7 @@ router.post("/Login", async (req, res, next) => {
   try {
     const user = (
       await DButils.execQuery(
-        `SELECT * FROM dbo.Users WHERE username = '${req.body.username}'`
+        `SELECT * FROM dbo.Users WHERE username = '${req.body.user_name}'`
       )
     )[0];
     // user = user[0];
@@ -49,7 +50,7 @@ router.post("/Login", async (req, res, next) => {
     }
 
     // Set cookie
-    req.session.user_name = user.user_name;
+    req.session.user_name = user.username;
 
     // return cookie
     res.status(200).send("login succeeded");
@@ -59,7 +60,7 @@ router.post("/Login", async (req, res, next) => {
 });
 
 router.post("/Logout", function (req, res) {
-  req.session.reset(); // reset the session info --> send cookie when  req.session == undefined!!
+  res.clearCookie("session"); // reset the session info --> send cookie when  req.session == undefined!!
   res.status(200).send("logout succeeded" );
 });
 

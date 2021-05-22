@@ -21,7 +21,11 @@ async function getTeamPageData(team_id){
         },
     });
     let players_info=await players_utils.getPlayersByTeam(team_id);
-    let coach_data=await coach_utils.getCoachPreviewData(team.data.data.coach_id);
+    let coach_data={
+        full_name:team.data.data.coach.data.fullname,
+        team_name: team.data.data.name,
+        pic: team.data.data.coach.data.image_path
+    };
     let team_games= await games_utils.getGamesOfTeam(team_id);
     return {
         team_id: team_id,

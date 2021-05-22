@@ -41,20 +41,31 @@ router.post("/addTeam/:user_name", async (req, res, next) => {
 
 
 router.post("/addPlayer/:user_name", async(req,res,next)=>{
-  const user_name = req.session.user_name;
+  try{
+    const user_name = req.session.user_name;
   const player_id = req.body.player_id;
   await users_utils.addPlayerToFavorites(user_name,player_id);
   res.status(201).send("player was added to favorites list");
+  }
+  catch(error){
+    next(error);
+  }
 });
 
-router.post("/addGameToFavorites/:user_name", async (req,res)=>{
-  const user_name = req.session.user_name;
+router.post("/addGameToFavorites/:user_name", async (req,res,next)=>{
+  try{
+    const user_name = req.session.user_name;
   const game_id = req.body.game_id;
   await users_utils.addGameToFavorites(user_name,game_id);
   res.status(201).send("game was added successfully");
+  }
+    catch(error){
+      next(error);
+    }
 });
 
-router.get("/getFavoriteTeams/:user_name", async(req,res)=>{
+router.get("/getFavoriteTeams/:user_name", async(req,res,next)=>{
+  try{
     const user_name=req.params.user_name;
     const teams_id= await users_utils.getFavoriteTeamsID(user_name);
     if(teams_id.length==0){
@@ -66,10 +77,15 @@ router.get("/getFavoriteTeams/:user_name", async(req,res)=>{
       favoriteTeams.push(team_utils.getTeamPageData(teams_id[i]));
     }
     res.status(200).send(favoriteTeams);
+  }  
+  catch(error){
+    next(error);
+  }
 });
 
-router.get("/getFavoriteGames", async(req,res)=>{
-  const user_name=req.params.user_name;
+router.get("/getFavoriteGames", async(req,res,next)=>{
+  try{
+    const user_name=req.params.user_name;
   await games_utils.deletePlayedGames(user_name);
   const games_id=await users_utils.getFavoriteGamesID(user_name);
   if(games_id.length==0){
@@ -81,6 +97,10 @@ router.get("/getFavoriteGames", async(req,res)=>{
     favorite_games.push(games_utils.getGameDetailsByID(games_id[i]));
   }
   res.status(200).send(favorite_games);
+  }
+  catch(error){
+    next(error);
+  }
 });
 
 /**

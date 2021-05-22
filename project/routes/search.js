@@ -3,8 +3,8 @@ let router=app.Router();
 const players_utils=require("./utils/players_utils");
 const teams_utils=require("./utils/teams_utils");
 
-router.use("lastResults", async(req,res,next)=>{
-    if(req.session && req.session.username){
+router.use("/lastResults", async(req,res,next)=>{
+    if(req.session && req.session.user_name){
         next();
     }
     else{
@@ -12,7 +12,18 @@ router.use("lastResults", async(req,res,next)=>{
     }
 });
 
-router.get("/:name",async (req,res) =>{
+router.get("/lastResults",async(req,res)=>{
+    if(!req.session.last_search_results){
+        res.status(204);
+    }
+    else{
+        res.status(200).send(req.session.last_search_results);
+    }
+    
+});
+
+router.get("/:name",async (req,res,next) =>{
+    try{
     const name=req.params.name;
     const players= await getAllPlayersByName(name);
     const teams= await teams_utils.getTeamsByName(name); // find all teams with the query name
@@ -33,15 +44,13 @@ router.get("/:name",async (req,res) =>{
         req.session.last_search_results=searchObj;
     }
     res.status(200).send(searchObj);
+    }
+    catch(error){
+        next(error);
+    }
 });
 
-router.get("/lastResults",async(req,res)=>{
-    if(!req.session.last_search_results){
-        res.status(204).send("There are no search results");
-        return;
-    }
-    res.status(200).send(req.session.last_search_results);
-});
+
 
 async function getAllPlayersByName(name){
     const players= await players_utils.getPlayersByName(name); // find all players with that name
