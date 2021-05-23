@@ -1,9 +1,13 @@
 const DButils=require("./DButils");
 
-
-async function getGamesOfTeam(team_id){
-    let future_games = await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE (hostTeam=${team_id} OR guestTeam=${team_id}) AND gameTime>=GETDATE()`);
-    let past_games= await DButils.execQuery(`SELECT id,gameTime,hostTeam,guestTeam,stadium,result,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE (hostTeam=${team_id} OR guestTeam=${team_id}) AND gameTime<GETDATE()`);
+/**
+ * This function get all team's games
+ * @param {*} team_name  team name to search
+ * @returns an array with future and past games
+ */
+async function getGamesOfTeam(team_name){
+    let future_games = await DButils.execQuery(`SELECT CONVERT(VARCHAR,gameTime,120) AS gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE (hostTeam='${team_name}' OR guestTeam='${team_name}') AND gameTime>=GETDATE()`);
+    let past_games= await DButils.execQuery(`SELECT id,CONVERT(VARCHAR,gameTime,120) AS gameTime,hostTeam,guestTeam,stadium,result,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE (hostTeam='${team_name}' OR guestTeam='${team_name}') AND gameTime<GETDATE()`);
     return await getFutureAndPastGamesObject(past_games,future_games);
 }
 
@@ -12,11 +16,12 @@ async function getFutureAndPastGamesObject(past_games,future_games){
     let future_games_Arr_to_return=[];
     for(let i=0;i<past_games.length;i++){
         let events_arr=[];
-        let gameEvents=await DButils.execQuery(`SELECT eventDate,eventHour,eventMinute,eventDescription FROM dbo.EventsInGame WHERE gameID=${past_games[i].id} `);
+        let gameEvents=await DButils.execQuery(`SELECT CONVERT(VARCHAR,eventDateAndTime,120) AS eventDateAndTime,eventMinuteInGame,eventType,eventDescription FROM dbo.EventsInGame WHERE gameID=${past_games[i].id} `);
         for(let j=0;j<gameEvents.length;j++){
+            const eventDateAndTime=createTimeInVisibaleFormat(gameEvents[i].eventDateAndTime);
             events_arr.push({
-                date: gameEvents[j].eventDate,
-                hour: gameEvents[j].eventHour,
+                date: eventDateAndTime[0],
+                hour: eventDateAndTime[1],
                 minute_in_game: gameEvents[j].eventMinute,
                 event_description: gameEvents[j].eventDescription
             });
@@ -27,7 +32,7 @@ async function getFutureAndPastGamesObject(past_games,future_games){
         past_games_arr_to_return.push(gameObj);
     }
     for(let i=0;i<future_games.length;i++){
-        future_games_Arr_to_return.push(createGameObject(future_games[i],team_games));
+        future_games_Arr_to_return.push(createGameObject(future_games[i]));
     }
     return {
         future_games_arr: future_games_Arr_to_return,
@@ -36,9 +41,9 @@ async function getFutureAndPastGamesObject(past_games,future_games){
 }
 
 function createGameObject(game){
-    let gameDate=new Date(game.gameTime);
-    let dateOfTheGame=(gameDate.getDate()).toString()+"/"+(gameDate.getMonth()+1).toString()+"/"+gameDate.getFullYear().toString();
-    let time= gameDate.getHours().toString+"/"+gameDate.getMinutes().toString();
+    let gameDate=createTimeInVisibaleFormat(game.gameTime);
+    let dateOfTheGame=gameDate[0];
+    let time= gameDate[1];
    return{
         home_team: game.hostTeam,
         away_team: game.guestTeam,
@@ -49,8 +54,15 @@ function createGameObject(game){
      };
 }
 
+function createTimeInVisibaleFormat(date_and_time){
+    let timeObject=new Date(date_and_time);
+    let dateOfTheGame=(timeObject.getDate()).toString()+"/"+(timeObject.getMonth()+1).toString()+"/"+timeObject.getFullYear().toString();
+    let time= timeObject.getHours().toString()+":"+timeObject.getMinutes().toString();
+    return [dateOfTheGame,time];
+}
+
 async function getNearestGame(){
-    let games= await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime>=GETDATE()`);
+    let games= await DButils.execQuery(`SELECT CONVERT(VARCHAR,gameTime,120) AS gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime>=GETDATE()`);
     if(games.length==0){
         return null;
     }
@@ -59,7 +71,8 @@ async function getNearestGame(){
     let currentDate=new Date();
     for(let i=0;i<games.length;i++){
         let gameDate=new Date(games[i].gameTime);
-        if((gameDate-currentDate)<diff){
+        let differrenceInDays=Math.ceil((gameDate-currentDate)/(1000*60*60*24));
+        if(differrenceInDays<diff){
             diff=gameDate-currentDate;
             nearestGame=games[i];
         }
@@ -68,17 +81,17 @@ async function getNearestGame(){
 }
 
 async function getGameDetailsByID(game_id){
-    const game=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE id=${game_id}`);
-    return createGameObject(game);
+    const game=await DButils.execQuery(`SELECT CONVERT(VARCHAR,gameTime,120) AS gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE id=${game_id}`);
+    return createGameObject(game[0]);
 }
 
-async function deletePlayedGames(user_name){
+async function deletePlayedGames(){
     // delete favorite games that were already played
-    await DButils.execQuery(`DELETE FROM User_favorite_teams WHERE GETDATE()>gameTime AND username='${user_name}'`);
+    await DButils.execQuery(`DELETE FROM User_favorite_games WHERE game_id IN (SELECT id FROM dbo.Games WHERE GETDATE()>gameTime)`);
 }
 
 async function getThreeNextGames(user_name){
-    const games=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.User_favorite_games ON dbo.Games.id=dbo.User_favorite_games.game_id INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE (gameTime>GETDATE() AND username='${user_name}')`);
+    const games=await DButils.execQuery(`SELECT CONVERT(VARCHAR,gameTime,120) AS gameTime,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.User_favorite_games ON dbo.Games.id=dbo.User_favorite_games.game_id INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE (gameTime>GETDATE() AND username='${user_name}')`);
     if(games.length==0){
         return [];
     }
@@ -97,8 +110,8 @@ async function getThreeNextGames(user_name){
 }
 
 async function getGamesOfCurrentStage(){
-    const future_games=await DButils.execQuery(`SELECT gameTime,hostTeam,guestTeam,stadium, fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime>=GETDATE()`);
-    const past_games= await DButils.execQuery(`SELECT id,gameTime,hostTeam,guestTeam,stadium,result,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime<GETDATE()`);
+    const future_games=await DButils.execQuery(`SELECT CONVERT(VARCHAR,gameTime,120) AS gameTime,hostTeam,guestTeam,stadium, fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime>=GETDATE()`);
+    const past_games= await DButils.execQuery(`SELECT id,CONVERT(VARCHAR,gameTime,120) AS gameTime,hostTeam,guestTeam,stadium,result,fullName FROM dbo.Games INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE gameTime<GETDATE()`);
     return await getFutureAndPastGamesObject(past_games,future_games);
 }
 

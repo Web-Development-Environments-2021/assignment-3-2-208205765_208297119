@@ -35,7 +35,7 @@ router.use("/addResultToGame/:game_id", async(req,res,next)=>{
 router.use("/addEventSchedualeToGame/:game_id",async(req,res,next)=>{
     try{
         checkIfGameWasPlayed(req,res,next);
-    }
+      }
     catch(error){
         next(error);
     }
@@ -97,8 +97,8 @@ router.post("/addResultToGame/:game_id/:result", async(req,res,next)=>{
 
 router.post("/addEventSchedualeToGame/:game_id", async(req,res,next)=>{
     try{
-        const game_id=req.params.game_id;
-    const event=req.body.eventsArr;
+    const game_id=req.params.game_id;
+    const eventsArr=req.body;
     for(event of eventsArr){
         await assosiation_man_utils.addEventToGame(game_id,event);
     }

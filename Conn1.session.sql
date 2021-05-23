@@ -1,4 +1,11 @@
-DROP TABLE Users;
+CREATE TABLE EventsInGame(
+    eventID INTEGER NOT NULL PRIMARY KEY IDENTITY,
+    gameID INTEGER NOT NULL,
+    eventDateAndTime DATETIME NOT NULL,
+    eventMinuteInGame INTEGER NOT NULL,
+    eventType VARCHAR(255) NOT NULL,
+    eventDescription VARCHAR(255) NOT NULL
+);
 CREATE TABLE  Users(
     username VARCHAR(255) NOT NULL PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
@@ -19,15 +26,7 @@ CREATE TABLE Games(
     referee_id INTEGER NOT NULL
 );
 
-CREATE TABLE EventsInGame(
-    eventID INTEGER NOT NULL PRIMARY KEY IDENTITY,
-    gameID INTEGER NOT NULL,
-    eventDate DATE NOT NULL,
-    eventHour TIME NOT NULL,
-    eventMinuteInGame INTEGER NOT NULL,
-    event VARCHAR(255) NOT NULL,
-    eventDescription VARCHAR(255) NOT NULL
-);
+
 
 CREATE TABLE User_Favorite_players(
     player_id INTEGER NOT NULL PRIMARY KEY ,
@@ -50,6 +49,7 @@ CREATE TABLE User_Favorite_players(
       country VARCHAR(255) NOT NULL,
       email VARCHAR(255) NOT NULL,
   )
+
 
 
 

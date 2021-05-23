@@ -26,10 +26,11 @@ async function getTeamPageData(team_id){
         team_name: team.data.data.name,
         pic: team.data.data.coach.data.image_path
     };
-    let team_games= await games_utils.getGamesOfTeam(team_id);
+    const team_name=team.data.data.name;
+    let team_games= await games_utils.getGamesOfTeam(team_name);
     return {
         team_id: team_id,
-        team_name: team.data.data.name,
+        team_name: team_name,
         team_logo: team.data.data.logo_path,
         players: players_info,
         coach: coach_data,

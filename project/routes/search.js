@@ -37,11 +37,15 @@ router.get("/:name",async (req,res,next) =>{
         if(req.session.user_name){
             req.session.last_search_results=null;
         }
-        res.status(204).send("No players/teams/coaches were found");
+        res.status(204).send("No players,teams,coaches were found");
         return;
     }
     if(req.session.user_name){
         req.session.last_search_results=searchObj;
+    }
+    if(players.length==0 || coaches.length==0 || teams.length==0){
+        res.status(206).send(searchObj);
+        return;
     }
     res.status(200).send(searchObj);
     }

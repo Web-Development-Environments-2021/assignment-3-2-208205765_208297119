@@ -2,13 +2,14 @@ var express = require("express");
 var router = express.Router();
 const league_utils = require("./utils/league_utils");
 const games_utils=require("./utils/gameUtils");
+const DButils=require("./utils/DButils");
 
 router.use("/rightColumn", async(req,res,next)=>{
   try{
     if (req.session && req.session.user_name) {
-      DButils.execQuery("SELECT user_id FROM dbo.Users")
+      DButils.execQuery("SELECT username FROM dbo.Users")
         .then((users) => {
-          if (users.find((x) => x.user_name === req.session.user_name)) {
+          if (users.find((x) => x.username === req.session.user_name)) {
             req.user_name = req.session.user_name;
             next();
           }
@@ -26,7 +27,12 @@ router.use("/rightColumn", async(req,res,next)=>{
 router.get("/leftColumn", async (req, res, next) => {
   try {
     const league_details = await league_utils.getLeagueDetails();
-    res.status(200).send(league_details);
+    if(league_details.next_planned_game==null){
+      res.status(206).send(league_details);
+    }
+    else{
+      res.status(200).send(league_details);
+    }
   } catch (error) {
     next(error);
   }

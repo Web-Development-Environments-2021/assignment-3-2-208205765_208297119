@@ -54,7 +54,6 @@ const search=require("./routes/search");
 const personalPages=require("./routes/personalPages");
 const currentStageGames=require("./routes/currentStageGames");
 const leagueManagment=require("./routes/leagueManagment");
-const Cookies = require("cookies");
 
 //#endregion
 
