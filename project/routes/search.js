@@ -14,7 +14,7 @@ router.use("/lastResults", async(req,res,next)=>{
 
 router.get("/lastResults",async(req,res)=>{
     if(!req.session.last_search_results){
-        res.status(204);
+        res.sendStatus(204);
     }
     else{
         res.status(200).send(req.session.last_search_results);

@@ -80,7 +80,6 @@ app.get("/alive", (req, res) => res.send("I'm alive"));
 // Routings
 app.use("/users", users);
 app.use("/mainPage", mainPage);
-app.use("/teams", teams);
 app.use("/search",search);
 app.use("/personalPages",personalPages);
 app.use("/currentStageGames",currentStageGames);
