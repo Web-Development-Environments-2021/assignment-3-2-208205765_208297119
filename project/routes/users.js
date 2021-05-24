@@ -39,7 +39,9 @@ router.post("/addTeam/:team_id", async (req, res, next) => {
   }
 });
 
-
+/**
+ * router for adding a player to user's favorites
+ */
 router.post("/addPlayer/:player_id", async(req,res,next)=>{
   try{
   const user_name = req.session.user_name;
@@ -52,6 +54,9 @@ router.post("/addPlayer/:player_id", async(req,res,next)=>{
   }
 });
 
+/**
+ * router for adding a game to user's favorites
+ */
 router.post("/addGameToFavorites/:game_id", async (req,res,next)=>{
   try{
   const user_name = req.session.user_name;
@@ -64,11 +69,14 @@ router.post("/addGameToFavorites/:game_id", async (req,res,next)=>{
     }
 });
 
+/**
+ * router for getting all user's favorite teams
+ */
 router.get("/getFavoriteTeams", async(req,res,next)=>{
   try{
     const user_name=req.session.user_name;
     const teams_id= await users_utils.getFavoriteTeamsID(user_name);
-    if(teams_id.length==0){
+    if(teams_id.length==0){//if no favorite teams
       res.status(204).send("no favorite games found");
       return;
     }
@@ -83,12 +91,15 @@ router.get("/getFavoriteTeams", async(req,res,next)=>{
   }
 });
 
+/**
+ * router for getting all use's favorite games
+ */
 router.get("/getFavoriteGames", async(req,res,next)=>{
   try{
   const user_name=req.session.user_name;
   await games_utils.deletePlayedGames();
   const games_id=await users_utils.getFavoriteGamesID(user_name);
-  if(games_id.length==0){
+  if(games_id.length==0){//if no favorite games
     res.status(204).send("no games were found");
     return;
   }

@@ -4,6 +4,11 @@ const coach_utils=require("./coach_utils");
 const DButils=require("./DButils");
 const games_utils=require("./gameUtils");
 
+/**
+ * This function returns a team object after a search by id of the team
+ * @param {*} team_id , id of the team to search
+ * @returns team object
+ */
 async function getTeamById(team_id){
     const team= await axios.get(`${process.env.api_domain}/teams/${team_id}`,{
         params:{
@@ -13,21 +18,28 @@ async function getTeamById(team_id){
     return team.data.data;
 }
 
+/**
+ * This function return a team object with team page data
+ * @param {*} team_id id of the team to search
+ * @returns team object with relevant data
+ */
 async function getTeamPageData(team_id){
+    //get team from external api
     const team = await axios.get(`${process.env.api_domain}/teams/${team_id}`,{
         params:{
             api_token: process.env.api_token,
             include: "coach"
         },
     });
-    let players_info=await players_utils.getPlayersByTeam(team_id);
+    let players_info=await players_utils.getPlayersByTeam(team_id);//get team's players info
+    //get data of team's coach
     let coach_data={
         full_name:team.data.data.coach.data.fullname,
         team_name: team.data.data.name,
         pic: team.data.data.coach.data.image_path
     };
     const team_name=team.data.data.name;
-    let team_games= await games_utils.getGamesOfTeam(team_name);
+    let team_games= await games_utils.getGamesOfTeam(team_name);//get team's games
     return {
         team_id: team_id,
         team_name: team_name,
@@ -38,6 +50,10 @@ async function getTeamPageData(team_id){
     };
 }
 
+/**
+ * This function returns all the teams of the current season of Danish SuperLeague
+ * @returns an array of the teams of current season
+ */
 async function getAllTeamsBySeasonID(){
     return await axios.get(`${process.env.api_domain}/teams/season/${process.env.season_id}`,{
         params:{
@@ -47,23 +63,30 @@ async function getAllTeamsBySeasonID(){
     });
 }
 
+/**
+ * This function returns team object after searching by name
+ * @param {*} name, name of the team to search
+ * @returns an array of teams with the given name
+ */
 async function getTeamsByName(name){
-    const teams_in_season= await getAllTeamsBySeasonID();
+    const teams_in_season= await getAllTeamsBySeasonID();//get all the teams of the season
     if(teams_in_season.data.data.length==0){
         return [];
     }
+    //get all the teams by the given name
     const teams_by_name= await axios.get(`${process.env.api_domain}/teams/search/${name}`,{
         params:{
             api_token: process.env.api_token
         },
     });
-    if(teams_by_name.data.data.length==0){
+    if(teams_by_name.data.data.length==0){//if no teams were found
         return [];
     }
     let relevant_teams=[];
+    //filter the teams that only teams from current season and with given name will return
     for(let i=0;i<teams_by_name.data.data.length;i++){
         const team_id=teams_by_name.data.data[i].id;
-        if(teams_in_season.data.data.find(x=> x.id===team_id)){
+        if(teams_in_season.data.data.find(x=> x.id===team_id)){// if the team in current season teams
             relevant_teams.push({
                 team_id: teams_by_name.data.data[i].id,
                 team_name: teams_by_name.data.data[i].name,

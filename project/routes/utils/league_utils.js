@@ -1,6 +1,10 @@
 const axios = require("axios");
 const game_utils=require("./gameUtils");
 
+/**
+ * This function ruturns the details of the main page about the league
+ * @returns 
+ */
 async function getLeagueDetails() {
   const league = await axios.get(
     `${process.env.api_domain}/leagues/${process.env.league_id}`,
@@ -19,7 +23,7 @@ async function getLeagueDetails() {
       },
     }
   );
-    let nearestGame=await game_utils.getNearestGame();
+    let nearestGame=await game_utils.getNearestGame();//get nearest game that need to be played
   return {
     league_name: league.data.data.name,
     current_season_name: league.data.data.season.data.name,

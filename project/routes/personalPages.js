@@ -4,6 +4,9 @@ const players_utils=require("./utils/players_utils");
 const coach_utils=require("./utils/coach_utils");
 const team_utils=require("./utils/teams_utils");
 
+/**
+ * router for personal page of player
+ */
 router.get("/playerPage/:player_id", async (req,res,next) =>{
     try{
         const player_id = req.params.player_id;
@@ -14,6 +17,9 @@ router.get("/playerPage/:player_id", async (req,res,next) =>{
     }
 });
 
+/**
+ * router for personal page of coach
+ */
 router.get("/coachPage/:coach_id", async (req,res,next)=>{
     try{
         const coach_id=req.params.coach_id;
@@ -24,6 +30,9 @@ router.get("/coachPage/:coach_id", async (req,res,next)=>{
     }
 });
 
+/**
+ * router for personal page of team
+ */
 router.get("/teamPage/:team_id",async (req,res,next)=>{
     try{
     const team_id=req.params.team_id;
