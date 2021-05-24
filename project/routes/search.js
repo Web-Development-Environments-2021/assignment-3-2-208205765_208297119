@@ -95,9 +95,7 @@ async function getAllCoachesByName(name){
     let coaches=[];
     for(let i=0;i<season_teams.data.data.length;i++){//filter all coaches that don't train a team in current season
         const coach_full_name=season_teams.data.data[i].coach.data.fullname;
-        const firstName=season_teams.data.data[i].coach.data.firstname;
-        const lastName=season_teams.data.data[i].coach.data.lastname;
-        if(name==firstName || name==lastName || name==coach_full_name){
+        if(coach_full_name.toLowerCase().includes(name.toLowerCase())){
             coaches.push({
                 coach_id:  season_teams.data.data[i].coach.data.coach_id,
                 full_name: coach_full_name,
