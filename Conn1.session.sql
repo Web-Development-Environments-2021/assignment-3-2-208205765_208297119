@@ -29,17 +29,20 @@ CREATE TABLE Games(
 
 
 CREATE TABLE User_Favorite_players(
-    player_id INTEGER NOT NULL PRIMARY KEY ,
+    id INTEGER NOT NULL PRIMARY KEY IDENTITY,
+    player_id INTEGER NOT NULL,
     userName VARCHAR(255) NOT NULL,
   );
 
   CREATE TABLE User_favorite_teams(
-      team_id INTEGER NOT NULL PRIMARY KEY,
+      id INTEGER NOT NULL PRIMARY KEY IDENTITY,
+      team_id INTEGER NOT NULL,
       username VARCHAR(255) NOT NULL
   );
 
   CREATE TABLE User_favorite_games(
-      game_id INTEGER NOT NULL PRIMARY KEY,
+      id INTEGER NOT NULL PRIMARY KEY IDENTITY,
+      game_id INTEGER NOT NULL,
       username VARCHAR(255) NOT NULL
   );
 

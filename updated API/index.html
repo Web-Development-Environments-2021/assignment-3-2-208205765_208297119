@@ -378,7 +378,7 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>{
-  "future_games" : [ {
+  "future_games_arr" : [ {
     "date" : "2000-01-23",
     "hour" : "1305",
     "referee_name" : "Alon Yefet",
@@ -393,7 +393,7 @@
     "home_team" : "Real Madrid",
     "away_team" : "Barcelona"
   } ],
-  "past_games" : [ {
+  "past_games_arr" : [ {
     "date" : "2000-01-23",
     "result" : "2-6",
     "events_schedule" : [ {
@@ -975,7 +975,7 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>{
-  "future_games" : [ {
+  "future_games_arr" : [ {
     "date" : "2000-01-23",
     "hour" : "1305",
     "referee_name" : "Alon Yefet",
@@ -990,7 +990,7 @@
     "home_team" : "Real Madrid",
     "away_team" : "Barcelona"
   } ],
-  "past_games" : [ {
+  "past_games_arr" : [ {
     "date" : "2000-01-23",
     "result" : "2-6",
     "events_schedule" : [ {
@@ -1084,9 +1084,9 @@
       "home_team" : "Real Madrid",
       "away_team" : "Barcelona"
     },
+    "current_season_name" : "2020/2021",
     "league_name" : "SuperLiga",
-    "current_season" : "2020/2021",
-    "current_stage" : "25"
+    "current_stage_name" : "25"
   }
 }</code></pre>
 
@@ -1774,9 +1774,9 @@
     <div class="field-items">
       <div class="param">league_name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> league&#x27;s name </div>
           <div class="param-desc"><span class="param-type">example: SuperLiga</span></div>
-<div class="param">current_season (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> current league&#x27;s season </div>
+<div class="param">current_season_name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> current league&#x27;s season </div>
           <div class="param-desc"><span class="param-type">example: 2020/2021</span></div>
-<div class="param">current_stage (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> current stage of current season </div>
+<div class="param">current_stage_name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> current stage of current season </div>
           <div class="param-desc"><span class="param-type">example: 25</span></div>
 <div class="param">next_planned_game (optional)</div><div class="param-desc"><span class="param-type"><a href="#future_game">future_game</a></span>  </div>
     </div>  <!-- field-items -->
@@ -1902,8 +1902,8 @@
     <h3><a name="weekGames"><code>weekGames</code></a> <a class="up" href="#__Models">Up</a></h3>
     <div class='model-description'>object holds all current stage games</div>
     <div class="field-items">
-      <div class="param">past_games (optional)</div><div class="param-desc"><span class="param-type"><a href="#past_game">array[past_game]</a></span> array holding current stage past games </div>
-<div class="param">future_games (optional)</div><div class="param-desc"><span class="param-type"><a href="#future_game">array[future_game]</a></span> array holding current stage future games </div>
+      <div class="param">past_games_arr (optional)</div><div class="param-desc"><span class="param-type"><a href="#past_game">array[past_game]</a></span> array holding current stage past games </div>
+<div class="param">future_games_arr (optional)</div><div class="param-desc"><span class="param-type"><a href="#future_game">array[future_game]</a></span> array holding current stage future games </div>
     </div>  <!-- field-items -->
   </div>
   </body>

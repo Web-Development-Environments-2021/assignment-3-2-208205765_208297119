@@ -693,12 +693,12 @@ components:
     weekGames:
       type: object
       properties:
-        past_games:
+        past_games_arr:
           type: array
           description: array holding current stage past games
           items:
             $ref: '#/components/schemas/past_game'
-        future_games:
+        future_games_arr:
           type: array
           description: array holding current stage future games
           items:
@@ -905,11 +905,11 @@ components:
           type: string
           description: league's name
           example: SuperLiga
-        current_season:
+        current_season_name:
           type: string
           description: current league's season
           example: 2020/2021
-        current_stage:
+        current_stage_name:
           type: string
           description: current stage of current season
           example: "25"
