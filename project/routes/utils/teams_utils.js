@@ -34,6 +34,7 @@ async function getTeamPageData(team_id){
     let players_info=await players_utils.getPlayersByTeam(team_id);//get team's players info
     //get data of team's coach
     let coach_data={
+        coach_id: team.data.data.coach.data.coach_id,
         full_name:team.data.data.coach.data.fullname,
         team_name: team.data.data.name,
         pic: team.data.data.coach.data.image_path

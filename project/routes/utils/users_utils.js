@@ -6,7 +6,7 @@ const DButils = require("./DButils");
  * @param {*} team_id, id of the team to add
  */
 async function addTeamToFavorites(user_name, team_id) {
-  await DButils.execQuery(`INSERT INTO User_favorite_teams values (${team_id},'${user_name}')`);
+  await DButils.execQuery(`INSERT INTO User_favorite_teams (team_id,username) values (${team_id},'${user_name}')`);
 }
 
 /**
@@ -27,7 +27,7 @@ async function getFavoritePlayers(user_name) {
  * @param {*} player_id, id of the player to add
  */
 async function addPlayerToFavorites(user_name,player_id){
-  await DButils.execQuery(`INSERT INTO User_favorite_players values (${player_id},'${user_name}')`);
+  await DButils.execQuery(`INSERT INTO User_favorite_players (player_id,username) values (${player_id},'${user_name}')`);
 }
 
 /**
@@ -36,7 +36,7 @@ async function addPlayerToFavorites(user_name,player_id){
  * @param {*} game_id, id of the game to add
  */
 async function addGameToFavorites(user_name,game_id){
-  await DButils.execQuery(`INSERT INTO User_favorite_games values(${game_id},'${user_name}')`);
+  await DButils.execQuery(`INSERT INTO User_favorite_games (game_id,username) values(${game_id},'${user_name}')`);
 }
 
 /**

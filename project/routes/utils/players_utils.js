@@ -93,10 +93,10 @@ function extractRelevantPlayerData(players_info) {
     const { name } = player_info.data.data.team.data;
     return {
       player_id: player_id,
-      name: fullname,
+      full_name: fullname,
       team_name: name,
-      image: image_path,
-      position: position_id
+      pic: image_path,
+      position_number: position_id
     };
   });
 }
