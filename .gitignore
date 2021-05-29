@@ -1,3 +1,4 @@
 .env
 package-lock.json
 node_modules
+Conn1.session.sql
