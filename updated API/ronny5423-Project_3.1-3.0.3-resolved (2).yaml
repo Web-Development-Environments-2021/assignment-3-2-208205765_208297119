@@ -410,6 +410,14 @@ paths:
           description: game was added to the system
         "403":
           description: unauthorized user
+        "409":
+          description: game was already added
+          content:
+            application/json:
+              schema:
+                type: string
+                description: error message
+                example: Game was already added
   /leagueManagment/addResultToGame/{game_id}/{result}:
     post:
       tags:
@@ -446,6 +454,8 @@ paths:
                 type: string
                 description: error message
                 example: you cannot add result to unplayed game
+        "409":
+          description: result was already added to this game
   /leagueManagment/addEventSchedualeToGame/{game_id}:
     post:
       tags:
@@ -473,8 +483,14 @@ paths:
           description: unauthorized user
         "404":
           description: game wasn't played yet
-        "500":
-          description: internal server errors
+        "409":
+          description: add events that already added
+          content:
+            application/json:
+              schema:
+                type: string
+                description: error message
+                example: One or more of the events you are trying to add was already added
   /leagueManagment/addRefereeToSystem:
     post:
       tags:

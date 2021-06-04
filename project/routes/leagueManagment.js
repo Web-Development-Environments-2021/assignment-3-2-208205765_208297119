@@ -26,12 +26,38 @@ router.use(async(req,res,next)=>{
     }
 });
 
+router.use("/addGameToSystem",async(req,res,next)=>{
+    try{
+        const game=req.body;
+        const gameWasAdded=await assosiation_man_utils.checkIfGameWasAdded(game);
+        if(gameWasAdded){
+            res.status(409).send("Game was already added");
+        }
+        else{
+            next();
+        }
+    }
+    catch(error){
+        next(error);
+    }
+});
+
 /**
  * router for adding a result to game
  */
 router.use("/addResultToGame/:game_id", async(req,res,next)=>{
     try{
-        checkIfGameWasPlayed(req,res,next);
+        const game_id=req.params.game_id;
+        if(!await checkIfGameWasPlayed(game_id)){
+            const resultWasAdded=await assosiation_man_utils.checkIfResultWasAdded(game_id);
+            if(resultWasAdded){
+                res.sendStatus(409);
+            }
+            else{
+                next();
+            }
+        }
+       
     }
     catch(error){
         next(error);
@@ -43,7 +69,19 @@ router.use("/addResultToGame/:game_id", async(req,res,next)=>{
  */
 router.use("/addEventSchedualeToGame/:game_id",async(req,res,next)=>{
     try{
-        checkIfGameWasPlayed(req,res,next);
+        const game_id=req.params.game_id;
+        if(!await checkIfGameWasPlayed(game_id)){//check if game was played
+            const eventsArr=req.body;
+            for(eventObj of eventsArr){//check every event if he was already added
+                const eventWasAdded= await assosiation_man_utils.checkIfEventWasAdded(eventObj,game_id);
+            if(eventWasAdded){
+                res.status(409).send("One or more of the events you are trying to add was already added");
+                return;
+            }
+            }
+            next();
+            
+        }
       }
     catch(error){
         next(error);
@@ -159,14 +197,14 @@ router.post("/addRefereeToSystem",async(req,res,next)=>{
     * @param {*} next , next
     * @returns 
     */
-async function checkIfGameWasPlayed(req,res,next){
-    const game_id =req.params.game_id;
+async function checkIfGameWasPlayed(game_id){
     const was_played= await games_utils.checkIfGameWasPlayed(game_id);
     if(!was_played){
         res.status(404).send("you cannot add result or event schedule to unplayed game");
-        return;
+        return true;
     }
-    next();
+    return false;
+    
 }
 
 

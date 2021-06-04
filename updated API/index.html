@@ -767,6 +767,12 @@
     <!--Todo: process Response Object and its headers, schema, examples -->
 
 
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">201</h4>
@@ -778,9 +784,9 @@
     <h4 class="field-label">404</h4>
     game wasn&#x27;t played yet
         <a href="#"></a>
-    <h4 class="field-label">500</h4>
-    internal server errors
-        <a href="#"></a>
+    <h4 class="field-label">409</h4>
+    add events that already added
+        <a href="#String">String</a>
   </div> <!-- method -->
   <hr/>
   <div class="method"><a name="leagueManagmentAddGameToSystemPost"></a>
@@ -811,6 +817,12 @@
     <!--Todo: process Response Object and its headers, schema, examples -->
 
 
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">201</h4>
@@ -819,6 +831,9 @@
     <h4 class="field-label">403</h4>
     unauthorized user
         <a href="#"></a>
+    <h4 class="field-label">409</h4>
+    game was already added
+        <a href="#String">String</a>
   </div> <!-- method -->
   <hr/>
   <div class="method"><a name="leagueManagmentAddRefereeToSystemPost"></a>
@@ -897,6 +912,9 @@
     <h4 class="field-label">404</h4>
     game wasn&#x27;t played yet
         <a href="#String">String</a>
+    <h4 class="field-label">409</h4>
+    result was already added to this game
+        <a href="#"></a>
   </div> <!-- method -->
   <hr/>
   <div class="method"><a name="leagueManagmentGetAllFreeRefereesToGameTimeOfGameGet"></a>

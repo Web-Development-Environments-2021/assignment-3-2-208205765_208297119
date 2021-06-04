@@ -47,9 +47,52 @@ async function getAllFreeRefereesToGame(game_time){
     return free_referees;
   }
 
+  /**
+   * This function checks if game was already added
+   * @param {*} game_details , game object to check
+   * @returns true if it was added or false if not
+   */
+  async function checkIfGameWasAdded(game_details){
+    const game=await DBUtills.execQuery(`SELECT * FROM dbo.Games WHERE gameTime='${game_details.date_and_time}' AND hostTeam='${game_details.home_team}' and guestTeam='${game_details.away_team}' and stadium='${game_details.stadium}' and referee_id=${game_details.referee_id} `);
+    if(game.length>0){
+        return true;
+    }
+    return false;
+  }
+
+  /**
+   * This function checks if result was added already to game
+   * @param {*} game_id , the id of the game to check
+   * @returns  true if result was added or false if not
+   */
+  async function checkIfResultWasAdded(game_id){
+      const game=await DBUtills.execQuery(`select result from dbo.Games where id=${game_id}`);
+      if(game[0].result!=null){
+          return true;
+      }
+      return false;
+  }
+
+  /**
+   * This function checks if event was already added
+   * @param {*} event_details , event object to check
+   * @param {*} game_id , id of the game that the event belongs to
+   * @returns true if the event was added or false if not
+   */
+  async function checkIfEventWasAdded(event_details,game_id){
+      const event= await DBUtills.execQuery(`select * from dbo.EventsInGame where gameID=${game_id} and eventDateAndTime='${event_details.eventDateAndTime}' and eventMinuteInGame=${event_details.eventMinuteInGame} and eventType='${event_details.eventType}' and eventDescription='${event_details.eventDescription}'`);
+      if(event.length>0){
+          return true;
+      }
+      return false;
+  }
+
 exports.getAssosiationMan=getAssosiationMan;
 exports.addGameToSystem=addGameToSystem;
 exports.addResultToGame=addResultToGame;
 exports.addEventToGame=addEventToGame;
 exports.addRefereeToSystem=addRefereeToSystem;
 exports.getAllFreeRefereesToGame=getAllFreeRefereesToGame;
+exports.checkIfGameWasAdded=checkIfGameWasAdded;
+exports.checkIfResultWasAdded=checkIfResultWasAdded;
+exports.checkIfEventWasAdded=checkIfEventWasAdded;
