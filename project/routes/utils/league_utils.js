@@ -16,7 +16,7 @@ async function getLeagueDetails() {
     }
   );
   const stage = await axios.get(
-    `${process.env.api_domain}/stages/${league.data.data.current_stage_id}`,
+    `${process.env.api_domain}/stages/77453568`,
     {
       params: {
         api_token: process.env.api_token,
