@@ -230,6 +230,7 @@
   <ul>
   <li><a href="#personalPagesCoachPageCoachIdGet"><code><span class="http-method">get</span> /personalPages/coachPage/{coach_id}</code></a></li>
   <li><a href="#personalPagesPlayerPagePlayerIdGet"><code><span class="http-method">get</span> /personalPages/playerPage/{player_id}</code></a></li>
+  <li><a href="#personalPagesTeamPageByNameTeamNameGet"><code><span class="http-method">get</span> /personalPages/teamPageByName/{team_name}</code></a></li>
   <li><a href="#personalPagesTeamPageTeamIdGet"><code><span class="http-method">get</span> /personalPages/teamPage/{team_id}</code></a></li>
   </ul>
   <h4><a href="#Search">Search</a></h4>
@@ -397,15 +398,17 @@
     "date" : "2000-01-23",
     "result" : "2-6",
     "events_schedule" : [ {
-      "eventDateAndTime" : "2020-02-06 16:30:02.810",
+      "date" : "2020-02-06",
+      "hour" : "21:45",
       "eventDescription" : "Goal By Messi",
-      "eventMinuteInGame" : "65",
-      "eventType" : "goal"
+      "eventType" : "goal",
+      "minute_in_game" : "65"
     }, {
-      "eventDateAndTime" : "2020-02-06 16:30:02.810",
+      "date" : "2020-02-06",
+      "hour" : "21:45",
       "eventDescription" : "Goal By Messi",
-      "eventMinuteInGame" : "65",
-      "eventType" : "goal"
+      "eventType" : "goal",
+      "minute_in_game" : "65"
     } ],
     "hour" : "1305",
     "referee_name" : "Alon Yefet",
@@ -416,15 +419,17 @@
     "date" : "2000-01-23",
     "result" : "2-6",
     "events_schedule" : [ {
-      "eventDateAndTime" : "2020-02-06 16:30:02.810",
+      "date" : "2020-02-06",
+      "hour" : "21:45",
       "eventDescription" : "Goal By Messi",
-      "eventMinuteInGame" : "65",
-      "eventType" : "goal"
+      "eventType" : "goal",
+      "minute_in_game" : "65"
     }, {
-      "eventDateAndTime" : "2020-02-06 16:30:02.810",
+      "date" : "2020-02-06",
+      "hour" : "21:45",
       "eventDescription" : "Goal By Messi",
-      "eventMinuteInGame" : "65",
-      "eventType" : "goal"
+      "eventType" : "goal",
+      "minute_in_game" : "65"
     } ],
     "hour" : "1305",
     "referee_name" : "Alon Yefet",
@@ -755,7 +760,7 @@
 
     <h3 class="field-label">Request body</h3>
     <div class="field-items">
-      <div class="param">body <a href="#event">event</a> (optional)</div>
+      <div class="param">body <a href="#eventToAdd">eventToAdd</a> (optional)</div>
       
             <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
                 </div>  <!-- field-items -->
@@ -1012,15 +1017,17 @@
     "date" : "2000-01-23",
     "result" : "2-6",
     "events_schedule" : [ {
-      "eventDateAndTime" : "2020-02-06 16:30:02.810",
+      "date" : "2020-02-06",
+      "hour" : "21:45",
       "eventDescription" : "Goal By Messi",
-      "eventMinuteInGame" : "65",
-      "eventType" : "goal"
+      "eventType" : "goal",
+      "minute_in_game" : "65"
     }, {
-      "eventDateAndTime" : "2020-02-06 16:30:02.810",
+      "date" : "2020-02-06",
+      "hour" : "21:45",
       "eventDescription" : "Goal By Messi",
-      "eventMinuteInGame" : "65",
-      "eventType" : "goal"
+      "eventType" : "goal",
+      "minute_in_game" : "65"
     } ],
     "hour" : "1305",
     "referee_name" : "Alon Yefet",
@@ -1031,15 +1038,17 @@
     "date" : "2000-01-23",
     "result" : "2-6",
     "events_schedule" : [ {
-      "eventDateAndTime" : "2020-02-06 16:30:02.810",
+      "date" : "2020-02-06",
+      "hour" : "21:45",
       "eventDescription" : "Goal By Messi",
-      "eventMinuteInGame" : "65",
-      "eventType" : "goal"
+      "eventType" : "goal",
+      "minute_in_game" : "65"
     }, {
-      "eventDateAndTime" : "2020-02-06 16:30:02.810",
+      "date" : "2020-02-06",
+      "hour" : "21:45",
       "eventDescription" : "Goal By Messi",
-      "eventMinuteInGame" : "65",
-      "eventType" : "goal"
+      "eventType" : "goal",
+      "minute_in_game" : "65"
     } ],
     "hour" : "1305",
     "referee_name" : "Alon Yefet",
@@ -1291,6 +1300,135 @@
         <a href="#playerDetails">playerDetails</a>
   </div> <!-- method -->
   <hr/>
+  <div class="method"><a name="personalPagesTeamPageByNameTeamNameGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /personalPages/teamPageByName/{team_name}</code></pre></div>
+    <div class="method-summary">team page by name (<span class="nickname">personalPagesTeamPageByNameTeamNameGet</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">team_name (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; name of the team to retrieve it&#x27;s page </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#team">team</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "players" : [ {
+    "player_id" : 1,
+    "full_name" : "Lionel Messi",
+    "position_number" : 9,
+    "team_Name" : "Barcelona",
+    "pic" : "https://cloudinary.com/abc"
+  }, {
+    "player_id" : 1,
+    "full_name" : "Lionel Messi",
+    "position_number" : 9,
+    "team_Name" : "Barcelona",
+    "pic" : "https://cloudinary.com/abc"
+  } ],
+  "games" : {
+    "future_games_arr" : [ {
+      "date" : "2000-01-23",
+      "hour" : "1305",
+      "referee_name" : "Alon Yefet",
+      "stadium" : "Santiago Bernabeu",
+      "home_team" : "Real Madrid",
+      "away_team" : "Barcelona"
+    }, {
+      "date" : "2000-01-23",
+      "hour" : "1305",
+      "referee_name" : "Alon Yefet",
+      "stadium" : "Santiago Bernabeu",
+      "home_team" : "Real Madrid",
+      "away_team" : "Barcelona"
+    } ],
+    "past_games_arr" : [ {
+      "date" : "2000-01-23",
+      "result" : "2-6",
+      "events_schedule" : [ {
+        "date" : "2020-02-06",
+        "hour" : "21:45",
+        "eventDescription" : "Goal By Messi",
+        "eventType" : "goal",
+        "minute_in_game" : "65"
+      }, {
+        "date" : "2020-02-06",
+        "hour" : "21:45",
+        "eventDescription" : "Goal By Messi",
+        "eventType" : "goal",
+        "minute_in_game" : "65"
+      } ],
+      "hour" : "1305",
+      "referee_name" : "Alon Yefet",
+      "stadium" : "Santiago Bernabeu",
+      "home_team" : "Real Madrid",
+      "away_team" : "Barcelona"
+    }, {
+      "date" : "2000-01-23",
+      "result" : "2-6",
+      "events_schedule" : [ {
+        "date" : "2020-02-06",
+        "hour" : "21:45",
+        "eventDescription" : "Goal By Messi",
+        "eventType" : "goal",
+        "minute_in_game" : "65"
+      }, {
+        "date" : "2020-02-06",
+        "hour" : "21:45",
+        "eventDescription" : "Goal By Messi",
+        "eventType" : "goal",
+        "minute_in_game" : "65"
+      } ],
+      "hour" : "1305",
+      "referee_name" : "Alon Yefet",
+      "stadium" : "Santiago Bernabeu",
+      "home_team" : "Real Madrid",
+      "away_team" : "Barcelona"
+    } ]
+  },
+  "team_id" : 1,
+  "coach" : {
+    "coach_id" : 1,
+    "full_name" : "Pep Guardiola",
+    "team_Name" : "Manchester City",
+    "pic" : "https://cloudinary.com/abc"
+  },
+  "team_name" : "Barcelona",
+  "team_logo" : "https://cloudinary.com/abc"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    team page was retrieved
+        <a href="#team">team</a>
+    <h4 class="field-label">204</h4>
+    no team by that name
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
   <div class="method"><a name="personalPagesTeamPageTeamIdGet"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
@@ -1353,15 +1491,17 @@
       "date" : "2000-01-23",
       "result" : "2-6",
       "events_schedule" : [ {
-        "eventDateAndTime" : "2020-02-06 16:30:02.810",
+        "date" : "2020-02-06",
+        "hour" : "21:45",
         "eventDescription" : "Goal By Messi",
-        "eventMinuteInGame" : "65",
-        "eventType" : "goal"
+        "eventType" : "goal",
+        "minute_in_game" : "65"
       }, {
-        "eventDateAndTime" : "2020-02-06 16:30:02.810",
+        "date" : "2020-02-06",
+        "hour" : "21:45",
         "eventDescription" : "Goal By Messi",
-        "eventMinuteInGame" : "65",
-        "eventType" : "goal"
+        "eventType" : "goal",
+        "minute_in_game" : "65"
       } ],
       "hour" : "1305",
       "referee_name" : "Alon Yefet",
@@ -1372,15 +1512,17 @@
       "date" : "2000-01-23",
       "result" : "2-6",
       "events_schedule" : [ {
-        "eventDateAndTime" : "2020-02-06 16:30:02.810",
+        "date" : "2020-02-06",
+        "hour" : "21:45",
         "eventDescription" : "Goal By Messi",
-        "eventMinuteInGame" : "65",
-        "eventType" : "goal"
+        "eventType" : "goal",
+        "minute_in_game" : "65"
       }, {
-        "eventDateAndTime" : "2020-02-06 16:30:02.810",
+        "date" : "2020-02-06",
+        "hour" : "21:45",
         "eventDescription" : "Goal By Messi",
-        "eventMinuteInGame" : "65",
-        "eventType" : "goal"
+        "eventType" : "goal",
+        "minute_in_game" : "65"
       } ],
       "hour" : "1305",
       "referee_name" : "Alon Yefet",
@@ -1586,7 +1728,9 @@
     <li><a href="#coachDetails"><code>coachDetails</code></a></li>
     <li><a href="#coach_preview"><code>coach_preview</code></a></li>
     <li><a href="#event"><code>event</code></a></li>
+    <li><a href="#eventToAdd"><code>eventToAdd</code></a></li>
     <li><a href="#eventsArr"><code>eventsArr</code></a></li>
+    <li><a href="#eventsArrToAdd"><code>eventsArrToAdd</code></a></li>
     <li><a href="#favoriteGames"><code>favoriteGames</code></a></li>
     <li><a href="#favoritePlayers"><code>favoritePlayers</code></a></li>
     <li><a href="#favoriteTeams"><code>favoriteTeams</code></a></li>
@@ -1676,7 +1820,24 @@
     <h3><a name="event"><code>event</code></a> <a class="up" href="#__Models">Up</a></h3>
     <div class='model-description'>event in game object</div>
     <div class="field-items">
-      <div class="param">eventDateAndTime (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> date and time when the event happend format: date-and-time</div>
+      <div class="param">date (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> date when the event happend </div>
+          <div class="param-desc"><span class="param-type">example: 2020-02-06</span></div>
+<div class="param">hour (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> time of the game </div>
+          <div class="param-desc"><span class="param-type">example: 21:45</span></div>
+<div class="param">minute_in_game (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> minute in the game when the event happened </div>
+          <div class="param-desc"><span class="param-type">example: 65</span></div>
+<div class="param">eventType (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+        <div class="param-enum-header">Enum:</div>
+        <div class="param-enum">goal</div><div class="param-enum">foul</div><div class="param-enum">red card</div><div class="param-enum">yellow card</div><div class="param-enum">offside</div><div class="param-enum">injury</div><div class="param-enum">subtitution</div>
+<div class="param">eventDescription (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> description of the event </div>
+          <div class="param-desc"><span class="param-type">example: Goal By Messi</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="eventToAdd"><code>eventToAdd</code></a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>event in game object</div>
+    <div class="field-items">
+      <div class="param">eventDateAndTime (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> date and time when the event happend </div>
           <div class="param-desc"><span class="param-type">example: 2020-02-06 16:30:02.810</span></div>
 <div class="param">eventMinuteInGame (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> minute in the game when the event happened </div>
           <div class="param-desc"><span class="param-type">example: 65</span></div>
@@ -1689,6 +1850,12 @@
   </div>
   <div class="model">
     <h3><a name="eventsArr"><code>eventsArr</code></a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>event&#x27;s array to add to system</div>
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="eventsArrToAdd"><code>eventsArrToAdd</code></a> <a class="up" href="#__Models">Up</a></h3>
     <div class='model-description'>event&#x27;s array to add to system</div>
     <div class="field-items">
           </div>  <!-- field-items -->

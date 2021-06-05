@@ -58,10 +58,10 @@ const leagueManagment=require("./routes/leagueManagment");
 
 //#region cookie middleware
 app.use(function (req, res, next) {
-  if (req.session && req.session.user_id) {
+  if (req.session && req.session.user_name) {
     DButils.execQuery("SELECT username FROM dbo.Users")
       .then((users) => {
-        if (users.find((x) => x.user_name === req.session.user_name)) {
+        if (users.find((x) => x.username === req.session.user_name)) {
           req.user_name = req.session.user_name;
         }
         next();

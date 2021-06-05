@@ -98,7 +98,25 @@ async function getTeamsByName(name){
     return relevant_teams;
 }
 
+/**
+ * This function gets team's page by team name
+ * @param {*} team_name , name of the team to return it's page
+ * @returns team's object containing all relevant data
+ */
+async function teamPageDataByName(team_name){
+    const team=await axios.get(`${process.env.api_domain}/teams/search/${team_name}`,{
+        params:{
+            api_token: process.env.api_token
+        },
+    });
+    if(team.data.data.length==0){
+        return null;
+    }
+    return await getTeamPageData(team.data.data[0].id);
+}
+
 exports.getTeamsByName= getTeamsByName;
 exports.getTeamById=getTeamById;
 exports.getTeamPageData=getTeamPageData;
 exports.getAllTeamsBySeasonID=getAllTeamsBySeasonID;
+exports.teamPageDataByName=teamPageDataByName;

@@ -116,6 +116,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/team'
+  /personalPages/teamPageByName/{team_name}:
+    get:
+      tags:
+      - personalPages
+      summary: team page by name
+      parameters:
+      - name: team_name
+        in: path
+        description: name of the team to retrieve it's page
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: team page was retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/team'
+        "204":
+          description: no team by that name
   /users/addTeam/{team_id}:
     post:
       tags:
@@ -475,7 +498,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/eventsArr'
+              $ref: '#/components/schemas/eventsArrToAdd'
       responses:
         "201":
           description: event scheduale was added to game
@@ -856,12 +879,15 @@ components:
     event:
       type: object
       properties:
-        eventDateAndTime:
+        date:
           type: string
-          description: date and time when the event happend
-          format: date-and-time
-          example: 2020-02-06 16:30:02.810
-        eventMinuteInGame:
+          description: date when the event happend
+          example: 2020-02-06
+        hour:
+          type: string
+          description: time of the game
+          example: 21:45
+        minute_in_game:
           type: string
           description: minute in the game when the event happened
           example: "65"
@@ -914,6 +940,37 @@ components:
           description: id of referee to assign to game
           example: 1
       description: game object
+    eventToAdd:
+      type: object
+      properties:
+        eventDateAndTime:
+          type: string
+          description: date and time when the event happend
+          example: 2020-02-06 16:30:02.810
+        eventMinuteInGame:
+          type: string
+          description: minute in the game when the event happened
+          example: "65"
+        eventType:
+          type: string
+          enum:
+          - goal
+          - foul
+          - red card
+          - yellow card
+          - offside
+          - injury
+          - subtitution
+        eventDescription:
+          type: string
+          description: description of the event
+          example: Goal By Messi
+      description: event in game object
+    eventsArrToAdd:
+      type: array
+      description: event's array to add to system
+      items:
+        $ref: '#/components/schemas/eventToAdd'
     mainPage_leagueDetails:
       type: object
       properties:

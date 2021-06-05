@@ -43,4 +43,23 @@ router.get("/teamPage/:team_id",async (req,res,next)=>{
     }
 });
 
+/**
+ * router for team page by name
+ */
+router.get("/teamPageByName/:team_name", async(req,res,next)=>{
+    try{
+        const team_name=req.params.team_name;
+        const team=await team_utils.teamPageDataByName(team_name);
+        if(team==null){
+            res.sendStatus(204);
+        }
+        else{
+            res.status(200).send(team);
+        }
+    }
+    catch(error){
+        next(error);
+    }
+});
+
 module.exports=router;
