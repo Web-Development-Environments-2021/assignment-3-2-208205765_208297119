@@ -598,6 +598,10 @@ components:
     future_game:
       type: object
       properties:
+        id:
+          type: integer
+          description: id of the game
+          example: 2
         home_team:
           type: string
           description: the name of home team
@@ -626,6 +630,10 @@ components:
     past_game:
       type: object
       properties:
+        id:
+          type: integer
+          description: game id
+          example: 2
         home_team:
           type: string
           description: the name of home team
@@ -659,7 +667,7 @@ components:
           type: array
           description: array of all events at the game
           items:
-            $ref: '#/components/schemas/event'
+            $ref: '#/components/schemas/events_arr'
       description: game object
     player_preview:
       type: object
@@ -906,7 +914,7 @@ components:
           description: description of the event
           example: Goal By Messi
       description: event in game object
-    eventsArr:
+    events_arr:
       type: array
       description: event's array to add to system
       items:
