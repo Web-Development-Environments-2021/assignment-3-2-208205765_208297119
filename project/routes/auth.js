@@ -53,7 +53,12 @@ router.post("/Login", async (req, res, next) => {
     req.session.user_name = user.username;
 
     // return cookie
-    res.status(200).send("login succeeded");
+    const admin=(await DButils.execQuery(`select username from dbo.Users`))[0];
+    let isAdmin=false;
+    if(admin.username==user.username){
+      isAdmin=true;
+    }
+    res.status(200).send(isAdmin);
   } catch (error) {
     next(error);
   }

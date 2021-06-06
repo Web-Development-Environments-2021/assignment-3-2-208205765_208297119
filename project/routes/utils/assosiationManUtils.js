@@ -12,7 +12,7 @@ async function getAssosiationMan(){
  * @param {*} game_details game object to add to the system
  */
 async function addGameToSystem(game_details){
-    await DBUtills.execQuery(`INSERT INTO dbo.Games (gameTime,hostTeam,guestTeam,stadium,referee_id) VALUES ('${game_details.date_and_time}','${game_details.home_team}','${game_details.away_team}','${game_details.stadium}',${game_details.referee_id})`);
+    await DBUtills.execQuery(`INSERT INTO dbo.Games (gameTime,hostTeam,guestTeam,stadium,referee) VALUES ('${game_details.date_and_time}','${game_details.home_team}','${game_details.away_team}','${game_details.stadium}','${game_details.referee}')`);
 }
 /**
  * This function adds results to specific game
@@ -53,7 +53,7 @@ async function getAllFreeRefereesToGame(game_time){
    * @returns true if it was added or false if not
    */
   async function checkIfGameWasAdded(game_details){
-    const game=await DBUtills.execQuery(`SELECT * FROM dbo.Games WHERE gameTime='${game_details.date_and_time}' AND hostTeam='${game_details.home_team}' and guestTeam='${game_details.away_team}' and stadium='${game_details.stadium}' and referee_id=${game_details.referee_id} `);
+    const game=await DBUtills.execQuery(`SELECT * FROM dbo.Games WHERE gameTime='${game_details.date_and_time}' AND hostTeam='${game_details.home_team}' and guestTeam='${game_details.away_team}' and stadium='${game_details.stadium}' and referee='${game_details.referee}' `);
     if(game.length>0){
         return true;
     }
