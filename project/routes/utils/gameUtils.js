@@ -128,7 +128,7 @@ async function deletePlayedGames(){
  */
 async function getThreeNextGames(user_name){
     //get user's favorite games
-    const games=await DButils.execQuery(`SELECT CONVERT(VARCHAR,gameTime,120) AS gameTime,id,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.User_favorite_games ON dbo.Games.id=dbo.User_favorite_games.game_id INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE (gameTime>GETDATE() AND username='${user_name}')`);
+    const games=await DButils.execQuery(`SELECT CONVERT(VARCHAR,gameTime,120) AS gameTime,game_id,hostTeam,guestTeam,stadium,fullName FROM dbo.Games INNER JOIN dbo.User_favorite_games ON dbo.Games.id=dbo.User_favorite_games.game_id INNER JOIN dbo.Referees ON dbo.Games.referee_id=dbo.Referees.referee_id WHERE (gameTime>GETDATE() AND username='${user_name}')`);
     if(games.length==0){// if no favorite games
         return [];
     }
