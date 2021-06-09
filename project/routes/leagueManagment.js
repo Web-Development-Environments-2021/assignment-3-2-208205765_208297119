@@ -33,6 +33,14 @@ router.use("/addGameToSystem",async(req,res,next)=>{
         if(gameWasAdded){
             res.status(409).send("Game was already added");
         }
+        const valid_home_team=await assosiation_man_utils.checkIfTeamExist(game.home_team);//check if valid home team name
+        if(!valid_home_team){
+            res.sendStatus(400);
+        }
+        const valid_away_team=await assosiation_man_utils.checkIfTeamExist(game.away_team);//check if valid away team name
+        if(!valid_away_team){
+            res.sendStatus(400);
+        }
         else{
             next();
         }
@@ -106,31 +114,6 @@ router.get("/getAllGames", async(req,res,next)=>{
 });
 
 /**
- * router for getting all free referees for the game
- */
-router.get("/getAllFreeRefereesToGame/:time_of_game", async(req,res,next)=>{
-    try{
-    const game_time= req.params.time_of_game;
-    const free_referees=await assosiation_man_utils.getAllFreeRefereesToGame(game_time);
-    if(free_referees.length==0){// if no avaliable referees for game
-        res.status(204).send();
-        return;
-    }
-    let free_referees_objects_arr=[];
-    for(referee of free_referees){// create referee object for each avaliable referee
-        free_referees_objects_arr.push({
-            referee_id: referee.referee_id,
-            referee_name: referee.fullName
-        });
-    }
-    res.status(200).send(free_referees_objects_arr);
-    }
-    catch(error){
-        next(error);
-    }
-});
-
-/**
  * router for adding game to the system
  */
 router.post("/addGameToSystem", async(req,res,next)=>{
@@ -176,19 +159,6 @@ router.post("/addEventSchedualeToGame/:game_id", async(req,res,next)=>{
     }
 });
 
-/**
- * router for adding referee to the system
- */
-router.post("/addRefereeToSystem",async(req,res,next)=>{
-    try{
-    const referee=req.body;//get referee details from request body
-    await assosiation_man_utils.addRefereeToSystem(referee);//add referee to the system
-    res.status(201).send();
-    }
-    catch(error){
-        next(error);
-    }
-   });
 
    /**
     * This function checks if game was played and if yes, continue to add result or event schedule

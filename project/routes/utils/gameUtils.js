@@ -74,7 +74,7 @@ function createGameObject(game){
 function createTimeInVisibaleFormat(date_and_time){
     let timeObject=new Date(date_and_time);
     let dateOfTheGame=(timeObject.getDate()).toString()+"/"+(timeObject.getMonth()+1).toString()+"/"+timeObject.getFullYear().toString();
-    let time= timeObject.getHours().toString()+":"+timeObject.getMinutes().toString();
+    let time= String(timeObject.getHours()).padStart(2,"0")+":"+String(timeObject.getMinutes()).padStart(2,"0");
     return [dateOfTheGame,time];
 }
 

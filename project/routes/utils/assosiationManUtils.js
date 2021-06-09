@@ -1,4 +1,5 @@
 const DBUtills=require("./DButils");
+const team_utils=require("./teams_utils");
 
 /**
  * This function gets the assosiaction man user
@@ -30,22 +31,6 @@ async function addResultToGame(game_id,result){
 async function addEventToGame(game_id,event){
     await DBUtills.execQuery(`INSERT INTO dbo.EventsInGame (gameID,eventDateAndTime,eventMinuteInGame,eventType,eventDescription) VALUES (${game_id},'${event.eventDateAndTime}',${event.eventMinuteInGame},'${event.eventType}','${event.eventDescription}')`);
 }
-/**
- * This function add a referee to the system
- * @param {*} referee referee object to add to the system
- */
-async function addRefereeToSystem(referee){
-    await DBUtills.execQuery(`INSERT INTO dbo.Referees (fullName,country,email) VALUES ('${referee.fullName}','${referee.country}','${referee.email}')`);
-}
-/**
- * This function returns all referees avaliable to be assigned to specific game
- * @param {*} game_time time of the game
- * @returns array of avaliable referees
- */
-async function getAllFreeRefereesToGame(game_time){
-    const free_referees= await DBUtills.execQuery(`SELECT referee_id, fullName FROM dbo.Referees WHERE referee_id NOT IN (SELECT referee_id FROM dbo.Games WHERE gameTime='${game_time}')`);
-    return free_referees;
-  }
 
   /**
    * This function checks if game was already added
@@ -87,12 +72,24 @@ async function getAllFreeRefereesToGame(game_time){
       return false;
   }
 
+  /**
+   * This function checks if team exist
+   * @param {*} team_name , name of the team to check
+   * @returns true if team exist or false if not
+   */
+  async function checkIfTeamExist(team_name){
+    const teams=await team_utils.getTeamsByName(team_name);
+    if(teams.length>0){
+        return true;
+    }
+    return false;
+  }
+
 exports.getAssosiationMan=getAssosiationMan;
 exports.addGameToSystem=addGameToSystem;
 exports.addResultToGame=addResultToGame;
 exports.addEventToGame=addEventToGame;
-exports.addRefereeToSystem=addRefereeToSystem;
-exports.getAllFreeRefereesToGame=getAllFreeRefereesToGame;
 exports.checkIfGameWasAdded=checkIfGameWasAdded;
 exports.checkIfResultWasAdded=checkIfResultWasAdded;
 exports.checkIfEventWasAdded=checkIfEventWasAdded;
+exports.checkIfTeamExist=checkIfTeamExist;
