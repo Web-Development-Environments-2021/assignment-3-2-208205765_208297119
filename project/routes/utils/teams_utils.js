@@ -28,10 +28,16 @@ async function getTeamPageData(team_id){
     const team = await axios.get(`${process.env.api_domain}/teams/${team_id}`,{
         params:{
             api_token: process.env.api_token,
-            include: "coach"
+            include: "coach,squad.player"
         },
     });
-    let players_info=await players_utils.getPlayersByTeam(team_id);//get team's players info
+    //let players_info=await players_utils.getPlayersByTeam(team_id);//get team's players info
+    const playersArr=team.data.data.squad.data;
+    const team_name=team.data.data.name;
+    let players_info=[];
+    for(let player of playersArr){
+        players_info.push(players_utils.getPlayerPreviewDataForTeamPage(player.player.data,team_name));
+    }
     //get data of team's coach
     let coach_data={
         coach_id: team.data.data.coach.data.coach_id,
@@ -39,7 +45,7 @@ async function getTeamPageData(team_id){
         team_name: team.data.data.name,
         pic: team.data.data.coach.data.image_path
     };
-    const team_name=team.data.data.name;
+    
     let team_games= await games_utils.getGamesOfTeam(team_name);//get team's games
     return {
         team_id: team_id,

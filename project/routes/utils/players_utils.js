@@ -128,8 +128,20 @@ function getPlayerPreviewData(player){
   };
 }
 
+function getPlayerPreviewDataForTeamPage(player,team_name){
+    return{
+    player_id: player.player_id,
+    full_name:player.fullname,
+    team_name: team_name,
+    pic:player.image_path,
+    position_number: player.position_id
+    }
+
+}
+
 exports.getPlayersByTeam = getPlayersByTeam;
 exports.getPlayersInfo = getPlayersInfo;
 exports.getPlayersByName= getPlayersByName;
 exports.getPlayerById=getPlayerById;
 exports.getPlayerPreviewData=getPlayerPreviewData;
+exports.getPlayerPreviewDataForTeamPage=getPlayerPreviewDataForTeamPage;
