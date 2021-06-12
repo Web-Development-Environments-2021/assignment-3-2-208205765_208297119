@@ -52,7 +52,7 @@ async function getPlayerById(id){
     team_name:player.data.data.team.data.name,
     pic:player.data.data.image_path,
     position_number: player.data.data.position_id,
-    common_name:player.data.data.commonname,
+    common_name:player.data.data.common_name,
     nationality:player.data.data.nationality,
     birth_date:player.data.data.birthdate,
     birth_country:player.data.data.birthcountry,
