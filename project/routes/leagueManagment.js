@@ -32,14 +32,16 @@ router.use("/addGameToSystem",async(req,res,next)=>{
         const gameWasAdded=await assosiation_man_utils.checkIfGameWasAdded(game);
         if(gameWasAdded){
             res.status(409).send("Game was already added");
+            return;
         }
         const valid_home_team=await assosiation_man_utils.checkIfTeamExist(game.home_team);//check if valid home team name
         if(!valid_home_team){
-            res.sendStatus(400);
+            res.status(400).send("Wrong home team name");
+            return;
         }
         const valid_away_team=await assosiation_man_utils.checkIfTeamExist(game.away_team);//check if valid away team name
         if(!valid_away_team){
-            res.sendStatus(400);
+            res.status(400).send("wrong away team name");
         }
         else{
             next();
