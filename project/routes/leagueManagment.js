@@ -2,6 +2,7 @@ const app=require("express");
 const router=app.Router();
 const assosiation_man_utils=require("./utils/assosiationManUtils");
 const games_utils=require("./utils/gameUtils");
+const teamUtils=require("./utils/teams_utils")
 
 /**
  * middelware to check if user is assosiation man
@@ -160,6 +161,27 @@ router.post("/addEventSchedualeToGame/:game_id", async(req,res,next)=>{
         next(error);
     }
 });
+
+/**
+ * This router returns all teams names that play in current season
+ */
+router.get("/getAllTeamsInLeague",async(req,res,next)=>{
+   try{
+       const teams= await teamUtils.getAllTeamsBySeasonID()
+        let teams_names=[]
+        for(team of teams.data.data){
+            teams_names.push({
+                name:team.name,
+                id:team.id
+            })
+        }
+        res.status(200).send(teams_names)
+    }
+    catch(error){
+        next(error)
+    }
+
+})
 
 
    /**
