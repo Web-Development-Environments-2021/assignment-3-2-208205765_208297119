@@ -122,6 +122,7 @@ function getPlayerPreviewData(player){
     player_id: player.player_id,
     full_name:player.fullname,
     team_name:player.team.data.name,
+    team_id:player.team.data.id,
     pic:player.image_path,
     position_number: player.position_id
 
