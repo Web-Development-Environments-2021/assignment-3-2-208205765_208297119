@@ -13,7 +13,7 @@ async function getAssosiationMan(){
  * @param {*} game_details game object to add to the system
  */
 async function addGameToSystem(game_details){
-    await DBUtills.execQuery(`INSERT INTO dbo.Games (gameTime,hostTeam,guestTeam,stadium,referee) VALUES ('${game_details.date_and_time}','${game_details.home_team}','${game_details.away_team}','${game_details.stadium}','${game_details.referee}')`);
+    await DBUtills.execQuery(`INSERT INTO dbo.Games (gameTime,hostTeam,guestTeam,stadium,referee) VALUES ('${game_details.date_and_time}','${game_details.home_team.toLowerCase()}','${game_details.away_team.toLowerCase()}','${game_details.stadium}','${game_details.referee}')`);
 }
 /**
  * This function adds results to specific game

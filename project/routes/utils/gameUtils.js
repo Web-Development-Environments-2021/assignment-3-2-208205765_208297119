@@ -6,6 +6,7 @@ const DButils=require("./DButils");
  * @returns an array with future and past games
  */
 async function getGamesOfTeam(team_name){
+    tean_name=team_name.toLowerCase()
     let future_games = await DButils.execQuery(`SELECT CONVERT(VARCHAR,gameTime,120) AS gameTime,id,hostTeam,guestTeam,stadium,referee FROM dbo.Games  WHERE (hostTeam='${team_name}' OR guestTeam='${team_name}') AND gameTime>=GETDATE()`);
     let past_games= await DButils.execQuery(`SELECT id,CONVERT(VARCHAR,gameTime,120) AS gameTime,hostTeam,guestTeam,stadium,result,referee FROM dbo.Games  WHERE (hostTeam='${team_name}' OR guestTeam='${team_name}') AND gameTime<GETDATE()`);
     return await getFutureAndPastGamesObject(past_games,future_games);
@@ -24,7 +25,7 @@ async function getFutureAndPastGamesObject(past_games,future_games){
         let events_arr=[];
         let gameEvents=await DButils.execQuery(`SELECT CONVERT(VARCHAR,eventDateAndTime,120) AS eventDateAndTime,eventMinuteInGame,eventType,eventDescription FROM dbo.EventsInGame WHERE gameID=${past_games[i].id} `);
         for(let j=0;j<gameEvents.length;j++){//extract relevant data from each event
-            const eventDateAndTime=createTimeInVisibaleFormat(gameEvents[i].eventDateAndTime);
+            const eventDateAndTime=createTimeInVisibaleFormat(gameEvents[j].eventDateAndTime);
             events_arr.push({
                 date: eventDateAndTime[0],
                 hour: eventDateAndTime[1],
