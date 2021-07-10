@@ -89,14 +89,15 @@ async function getNearestGame(){
     if(games.length==0){
         return null;
     }
-    let nearestGame=null;
-    let diff = 100000000;
+    let nearestGame=games[0];
     let currentDate=new Date();
-    for(let i=0;i<games.length;i++){//loop over all future games and choose the nearest game
-        let gameDate=new Date(games[i].gameTime);
-        let differrenceInDays=Math.ceil((gameDate-currentDate)/(1000*60*60*24));
-        if(differrenceInDays<diff){
-            diff=gameDate-currentDate;
+    let gameDate=new Date(games[0].gameTime)
+    let diff = gameDate-currentDate
+    for(let i=1;i<games.length;i++){//loop over all future games and choose the nearest game
+        gameDate=new Date(games[i].gameTime);
+        let differrenceBetweenDates=gameDate-currentDate;
+        if(differrenceBetweenDates<diff){
+            diff=differrenceBetweenDates;
             nearestGame=games[i];
         }
     }
